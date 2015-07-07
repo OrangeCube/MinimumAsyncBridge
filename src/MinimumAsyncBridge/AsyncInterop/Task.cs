@@ -1,19 +1,11 @@
-﻿#if NET40PLUS
-
-using System.Runtime.CompilerServices;
-
-[assembly: TypeForwardedTo(typeof(System.Threading.Tasks.Task))]
-
-#else
-
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace System.Threading.Tasks
 {
     /// <summary>
     /// Represents an asynchronous operation.
     /// </summary>
-    public class Task : ICriticalNotifyCompletion
+    public class Task
     {
         public TaskStatus Status { get; protected internal set; }
 
@@ -93,12 +85,12 @@ namespace System.Threading.Tasks
                 Thread.Sleep(10);
         }
 
-        public void UnsafeOnCompleted(Action continuation)
+        internal void UnsafeOnCompleted(Action continuation)
         {
             OnCompleted(continuation);
         }
 
-        public void OnCompleted(Action continuation)
+        internal void OnCompleted(Action continuation)
         {
             lock (_sync)
             {
@@ -121,14 +113,12 @@ namespace System.Threading.Tasks
 
         private event Action Completed;
 
-        public Task GetAwaiter() => this;
+        public TaskAwaiter GetAwaiter() => new TaskAwaiter(this);
 
-        public void GetResult()
+        internal void GetResult()
         {
             if(Exception != null)
                 throw Exception;
         }
     }
 }
-
-#endif

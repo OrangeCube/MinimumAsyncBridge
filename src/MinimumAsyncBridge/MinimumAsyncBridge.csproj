@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncInterop\AggregateException.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\TaskAwaiter`1.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\TaskAwaiter.cs" />
     <Compile Include="AsyncInterop\System.Runtime.CompilerServices\AsyncMethodBuilderCore.cs" />
     <Compile Include="AsyncInterop\System.Runtime.CompilerServices\AsyncMethodTaskCache.cs" />
     <Compile Include="AsyncInterop\System.Runtime.CompilerServices\AsyncServices.cs" />

@@ -1,12 +1,4 @@
-﻿#if NET40PLUS
-
-using System.Runtime.CompilerServices;
-
-[assembly: TypeForwardedTo(typeof(System.Threading.Tasks.TaskCompletionSource<>))]
-
-#else
-
-namespace System.Threading.Tasks
+﻿namespace System.Threading.Tasks
 {
     /// <summary>
     /// Represents the producer side of a <see cref="Task{TResult}"/> unbound to a delegate, providing access to the consumer side through the Task property.
@@ -68,5 +60,3 @@ namespace System.Threading.Tasks
         }
     }
 }
-
-#endif

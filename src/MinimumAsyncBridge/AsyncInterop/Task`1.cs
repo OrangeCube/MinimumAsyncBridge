@@ -1,12 +1,4 @@
-﻿#if NET40PLUS
-
-using System.Runtime.CompilerServices;
-
-[assembly: TypeForwardedTo(typeof(System.Threading.Tasks.Task<>))]
-
-#else
-
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace System.Threading.Tasks
 {
@@ -24,9 +16,9 @@ namespace System.Threading.Tasks
             return Complete();
         }
 
-        public new Task<TResult> GetAwaiter() => this;
+        public new TaskAwaiter<TResult> GetAwaiter() => new TaskAwaiter<TResult>(this);
 
-        public new TResult GetResult()
+        internal new TResult GetResult()
         {
             if (Exception != null)
                 throw Exception;
@@ -35,5 +27,3 @@ namespace System.Threading.Tasks
         }
     }
 }
-
-#endif

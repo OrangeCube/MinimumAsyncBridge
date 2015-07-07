@@ -1,12 +1,4 @@
-﻿#if NET40PLUS
-
-using System.Runtime.CompilerServices;
-
-[assembly: TypeForwardedTo(typeof(System.AggregateException))]
-
-# else
-
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace System
 {
@@ -39,5 +31,3 @@ namespace System
         }
     }
 }
-
-#endif

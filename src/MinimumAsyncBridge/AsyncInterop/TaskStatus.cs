@@ -1,12 +1,4 @@
-﻿#if NET40PLUS
-
-using System.Runtime.CompilerServices;
-
-[assembly: TypeForwardedTo(typeof(System.Threading.Tasks.TaskStatus))]
-
-#else
-
-namespace System.Threading.Tasks
+﻿namespace System.Threading.Tasks
 {
     /// <summary>
     /// Represents the current stage in the lifecycle of a Task.
@@ -34,5 +26,3 @@ namespace System.Threading.Tasks
         Faulted,
     }
 }
-
-#endif
