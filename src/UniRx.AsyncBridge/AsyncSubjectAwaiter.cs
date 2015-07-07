@@ -19,7 +19,7 @@ namespace UniRx.AsyncBridge
             if (_subject.IsCompleted)
                 continuation();
             else
-                _subject.ObserveOn(Scheduler.CurrentThread).Subscribe(_ => continuation());
+                _subject.ObserveOn(Scheduler.CurrentThread).First().Subscribe(_ => continuation());
         }
 
         public TResult GetResult() => _subject.Value;
