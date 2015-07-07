@@ -67,11 +67,11 @@ namespace System.Threading.Tasks
 
                     if (sc == null)
                     {
-                        Completed?.Invoke();
+                        _completed?.Invoke();
                     }
                     else
                     {
-                        sc.Post(state => ((Action)state).Invoke(), Completed);
+                        sc.Post(state => ((Action)state).Invoke(), _completed);
                     }
                     return true;
                 }
@@ -104,14 +104,14 @@ namespace System.Threading.Tasks
                 x = () =>
                 {
                     continuation();
-                    Completed -= x;
+                    _completed -= x;
                 };
 
-                Completed += x;
+                _completed += x;
             }
         }
 
-        private event Action Completed;
+        private Action _completed;
 
         public TaskAwaiter GetAwaiter() => new TaskAwaiter(this);
 
