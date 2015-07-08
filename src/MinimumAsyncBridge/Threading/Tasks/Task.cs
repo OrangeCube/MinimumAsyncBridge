@@ -120,5 +120,50 @@ namespace System.Threading.Tasks
             if(Exception != null)
                 throw Exception;
         }
+
+        public static Task<TResult> FromResult<TResult>(TResult value)
+        {
+            var tcs = new TaskCompletionSource<TResult>();
+            tcs.SetResult(value);
+            return tcs.Task;
+        }
+
+        public static Task CompletedTask { get; } = FromResult<object>(null);
+
+        public static Task<Task> WhenAny(params Task[] tasks)
+        {
+            var tcs = new TaskCompletionSource<Task>();
+
+            foreach (var t in tasks)
+            {
+                if (t.IsCompleted)
+                {
+                    tcs.TrySetResult(t);
+                    break;
+                }
+
+                t.GetAwaiter().OnCompleted(() => tcs.TrySetResult(t));
+            }
+
+            return tcs.Task;
+        }
+
+        public static Task<Task<TResult>> WhenAny<TResult>(params Task<TResult>[] tasks)
+        {
+            var tcs = new TaskCompletionSource<Task<TResult>>();
+
+            foreach (var t in tasks)
+            {
+                if (t.IsCompleted)
+                {
+                    tcs.TrySetResult(t);
+                    break;
+                }
+
+                t.GetAwaiter().OnCompleted(() => tcs.TrySetResult(t));
+            }
+
+            return tcs.Task;
+        }
     }
 }
