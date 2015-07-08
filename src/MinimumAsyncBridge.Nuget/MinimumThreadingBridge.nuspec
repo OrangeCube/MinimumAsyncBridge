@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>MinimumAsyncBridge</id>
-    <version>0.9.1.0</version>
-    <title>MinimumAsyncBridge</title>
+    <id>MinimumThreadingBridge</id>
+    <version>0.9.0.0</version>
+    <title>MinimumThreadingBridge</title>
     <authors>Nobuyuki Iwanaga</authors>
     <owners>Nobuyuki Iwanaga</owners>
     <licenseUrl>https://github.com/ufcpp/MinimumAsyncBridge/blob/master/LICENSE</licenseUrl>
@@ -12,13 +12,13 @@
     <description>Miminum set of the async/await portability libarary.</description>
     <releaseNotes>pre-release.</releaseNotes>
     <copyright>Nobuyuki Iwanaga</copyright>
-    <tags>AsyncBridge, async, await</tags>
+    <tags>AsyncBridge, CancellationToken</tags>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="" />
     </frameworkAssemblies>
   </metadata>
   <files>
-      <file src="..\bin\Async\net35\*" target="lib\net35\" />
-      <file src="..\bin\Async\net45\*" target="lib\net45\" />
+      <file src="..\bin\Threading\net35\*" target="lib\net35\" />
+      <file src="..\bin\Threading\net45\*" target="lib\net45\" />
   </files>
 </package>
