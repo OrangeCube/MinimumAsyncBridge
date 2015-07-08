@@ -1,76 +1,76 @@
 # MinimumAsyncBridge
 
-async/await �̎��s�ɕK�v�ȍŒ���̎����B
+async/await の実行に必要な最低限の実装。
 
-C# 5.0 �� async/await �� .NET 3.5/Unity �Q�[�� �G���W����Ŏ��s�ł���悤�ɂ��邽�߂̃��C�u�����B
+C# 5.0 の async/await を .NET 3.5/Unity ゲーム エンジン上で実行できるようにするためのライブラリ。
 
-## �w�i
+## 背景
 
 ### C# 5.0 async/await
 
-C# 5.0 �� async/await �̎��s�ɂ́A
+C# 5.0 の async/await の実行には、
 
-- .NET 4 �Œǉ����ꂽ 'Task' �N���X
-- .NET 4.5 �Œǉ����ꂽ `AsyncTaskMethodBuilder` �Ȃǂ̈�A�̃N���X
+- .NET 4 で追加された `Task` クラス
+- .NET 4.5 で追加された `AsyncTaskMethodBuilder` などの一連のクラス
 
-���K�v�B
+が必要。
 
-�������o�b�N�|�[�e�B���O����΁A.NET 3.5 ��ł� C# 5.0 ���g����B
+これらをバックポーティングすれば、.NET 3.5 上でも C# 5.0 が使える。
 
-### Unity �̐���
+### Unity の制限
 
-�����AUnity �͗��p���Ă��� .NET �����^�C�����Â���(Mono 2.8�n)�A���낢�됧��������B
+ただ、Unity は利用している .NET ランタイムが古くて(Mono 2.8系)、いろいろ制限がある。
 
-���ɁAiOS �͉��z�}�V�����s���ł��Ȃ��̂� AOT (Ahead of Time)�R���p�C�����s���Ă��āA����̐��������Ɍ������B
+特に、iOS は仮想マシン実行ができないので AOT (Ahead of Time)コンパイル実行していて、これの制限が特に厳しい。
 
-2015�N���݁AUnity �� iOS ��ł̎��s�� Mono �� AOT �R���p�C������A�Ǝ������� [IL2CPP](http://blogs.unity3d.com/2014/05/20/the-future-of-scripting-in-unity/)�Ƃ��������Ɉڍs���Ȃ��̂́A
-������܂��܂��s����B
+2015年現在、Unity は iOS 上での実行を Mono の AOT コンパイルから、独自実装の [IL2CPP](http://blogs.unity3d.com/2014/05/20/the-future-of-scripting-in-unity/)という方式に移行中なものの、
+これもまだまだ不安定。
 
-���ʂƂ��āA�t���@�\�� `Task` �̈ڐA�� Unity ��(���� iOS)�œ������Ȃ��\���������B
+結果として、フル機能の `Task` の移植は Unity 上(特に iOS)で動かせない可能性が高い。
 
-���ہA�L���ǂ���� `Task` �o�b�N�|�[�e�B���O��������Unity��Ŏg���Ă݂��Ƃ���A����ł�IL2CPP�̃R���p�C���Ɏ��s(2015/7���_)�B
+実際、有名どころの `Task` バックポーティングを試しにUnity上で使ってみたところ、現状ではIL2CPPのコンパイルに失敗(2015/7時点)。
 
 - [AsyncBridge](http://omermor.github.io/AsyncBridge/)
 
-#### �����I��
+#### 将来的に
 
-IL2CPP �͏��X�ɉ��P���Ă����Ă���̂ŁA��L�����͏��X�ɂȂ��Ȃ�͂��B
+IL2CPP は徐々に改善していっているので、上記制限は徐々になくなるはず。
 
-�����AIL2CPP �̓R���p�C���ɔ��Ɏ��Ԃ�������̂ŁA���@�m�F�̂��т� IL2CPP �ŃR���p�C������̂̓X�g���X���������B
+ただ、IL2CPP はコンパイルに非常に時間がかかるので、実機確認のたびに IL2CPP でコンパイルするのはストレスが多そう。
 
-�Ȃ̂ŁA���ʂ̊Ԃ� Mono AOT �ł��������C�u�������K�v�B
-���A�����������珫���I�ɂ͕W�����C�u�����Ɉڍs�ł���\�����l�����������K�v�B
+なので、当面の間は Mono AOT でも動くライブラリが必要。
+かつ、もしかしたら将来的には標準ライブラリに移行できる可能性も考えた実装が必要。
 
-## ���̃��|�W�g�����񋟂������
+## このリポジトリが提供するもの
 
-async/await ���g�����������Ȃ�A�t���@�\�� `Task` �N���X�͗v��Ȃ��B
-�K�v�Ȃ̂� `TaskCompletionSource<TResult>` �N���X(C++ �� `std::promise` �I�Ȃ���)�����Ȃ̂ŁA����������������΂����B
+async/await を使いたいだけなら、フル機能の `Task` クラスは要らない。
+必要なのは `TaskCompletionSource<TResult>` クラス(C++ の `std::promise` 的なもの)だけなので、ここだけ実装すればいい。
 
-���������ł���΁AMono AOT �� IL2CPP �̐����Ɉ��������邱�ƂȂ������ł����B
+ここだけであれば、Mono AOT や IL2CPP の制限に引っかかることなく実装できた。
 
-�c��́A��ʓI�� `Task` �N���X�̍��A���Ȃ킿�A�}���`�X���b�h���s(`Task.Run`)��^�C�}�[(`Task.Delay`)�͎������Ă��Ȃ��B
-���̕ӂ�́A���̔񓯊��������C�u�����ƂȂ�����Ŗ��߂�z��B
+残りの、一般的な `Task` クラスの債務、すなわち、マルチスレッド実行(`Task.Run`)やタイマー(`Task.Delay`)は実装していない。
+この辺りは、他の非同期処理ライブラリとつなぎこんで埋める想定。
 
-��̓I�ɂ́A���̃��|�W�g���ɂ́A
+具体的には、このリポジトリには、
 
-- �W���� `Task` �̉��ʌ݊�����
-  - `System.Threading.Tasks` ���O��Ԃɒ�`
-  - `TaskCompletionSource<TResult>` �Ɋ֘A���镔������������
-    - `Task.Run`��`Task.Delay`�Ȃǂ̃��\�b�h�͂Ȃ��B
-  - .NET 4.5�ȏ�Ŏ��s����p�ɁA�W�����C�u�����ւ̌^�t�H���[�f�B���O����
-- `AsyncTaskMethodBuilder` �̃o�b�N�|�[�e�B���O
-  - [�}�C�N���\�t�g�̎Q�ƃ\�[�X�R�[�h](http://referencesource.microsoft.com/)���x�[�X
-- [UniRx](https://github.com/neuecc/UniRx)��[IteratorTasks](https://github.com/OrangeCube/IteratorTasks)�ɑ΂��� awaiter ����
+- 標準の `Task` の下位互換実装
+  - `System.Threading.Tasks` 名前空間に定義
+  - `TaskCompletionSource<TResult>` に関連する部分だけを実装
+    - `Task.Run`や`Task.Delay`などのメソッドはない。
+  - .NET 4.5以上で実行する用に、標準ライブラリへの型フォワーディングも提供
+- `AsyncTaskMethodBuilder` のバックポーティング
+  - [マイクロソフトの参照ソースコード](http://referencesource.microsoft.com/)がベース
+- [UniRx](https://github.com/neuecc/UniRx)と[IteratorTasks](https://github.com/OrangeCube/IteratorTasks)に対する awaiter 実装
 
-���܂܂�Ă���B
+が含まれている。
 
-## �o�C�i����
+## バイナリ提供
 
-NuGet �p�b�P�[�W���ς�:
+NuGet パッケージ化済み:
 
-- [MinimumAsyncBridge](https://www.nuget.org/packages/MinimumAsyncBridge/): async/await �̎��s�ɕK�v�ȍŒ���̎���
-  - .NET 4.5 ����p�b�P�[�W�Q�Ƃ���ƁA�W�����C�u�����ւ̌^�t�H���[�f�B���O
-- [IteratorTasks.AsyncBridge](https://www.nuget.org/packages/IteratorTasks.AsyncBridge/): [IteratorTasks](https://www.nuget.org/packages/IteratorTasks/)�ɑ΂��� awaiter ����
+- [MinimumAsyncBridge](https://www.nuget.org/packages/MinimumAsyncBridge/): async/await の実行に必要な最低限の実装
+  - .NET 4.5 からパッケージ参照すると、標準ライブラリへの型フォワーディング
+- [IteratorTasks.AsyncBridge](https://www.nuget.org/packages/IteratorTasks.AsyncBridge/): [IteratorTasks](https://www.nuget.org/packages/IteratorTasks/)に対する awaiter 実装
 
-(�� [UniRx](https://github.com/neuecc/UniRx)�͖{�̂� NuGet �p�b�P�[�W�ɂȂ��Ă��Ȃ��̂� awaiter �����̃p�b�P�[�W���J�Ȃ�)
+(※ [UniRx](https://github.com/neuecc/UniRx)は本体が NuGet パッケージになっていないので awaiter 実装のパッケージ公開なし)
 
