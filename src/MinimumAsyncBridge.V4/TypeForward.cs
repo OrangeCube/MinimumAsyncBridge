@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 [assembly: TypeForwardedTo(typeof(AggregateException))]
+
 [assembly: TypeForwardedTo(typeof(Task))]
 [assembly: TypeForwardedTo(typeof(Task<>))]
 [assembly: TypeForwardedTo(typeof(TaskCanceledException))]
