@@ -70,6 +70,7 @@ NuGet パッケージ化済み:
 
 - [MinimumAsyncBridge](https://www.nuget.org/packages/MinimumAsyncBridge/): async/await の実行に必要な最低限の実装
   - .NET 4.5 からパッケージ参照すると、標準ライブラリへの型フォワーディング
+- [MinimumThreadingBridge](https://www.nuget.org/packages/MinimumThreadingBridge/): `CancellationToken` の最低限の実装
 - [IteratorTasks.AsyncBridge](https://www.nuget.org/packages/IteratorTasks.AsyncBridge/): [IteratorTasks](https://www.nuget.org/packages/IteratorTasks/)に対する awaiter 実装
 
 (※ [UniRx](https://github.com/neuecc/UniRx)は本体が NuGet パッケージになっていないので awaiter 実装のパッケージ公開なし)
