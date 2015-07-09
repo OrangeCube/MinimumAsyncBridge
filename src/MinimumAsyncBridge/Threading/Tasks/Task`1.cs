@@ -25,5 +25,27 @@ namespace System.Threading.Tasks
 
             return Result;
         }
+
+        public Task ContinueWith(Action<Task<TResult>> continuationAction)
+        {
+            var tcs = new TaskCompletionSource<object>();
+            OnCompleted(() =>
+            {
+                continuationAction(this);
+                tcs.TrySetResult(null);
+            });
+            return tcs.Task;
+        }
+
+        public Task<TNewResult> ContinueWith<TNewResult>(Func<Task<TResult>, TNewResult> continuationFunction)
+        {
+            var tcs = new TaskCompletionSource<TNewResult>();
+            OnCompleted(() =>
+            {
+                var r = continuationFunction(this);
+                tcs.TrySetResult(r);
+            });
+            return tcs.Task;
+        }
     }
 }

@@ -165,5 +165,64 @@ namespace System.Threading.Tasks
 
             return tcs.Task;
         }
+
+        public Task ContinueWith(Action<Task> continuationAction)
+        {
+            var tcs = new TaskCompletionSource<object>();
+            OnCompleted(() =>
+            {
+                continuationAction(this);
+                tcs.TrySetResult(null);
+            });
+            return tcs.Task;
+        }
+
+        public Task<TResult> ContinueWith<TResult>(Func<Task, TResult> continuationFunction)
+        {
+            var tcs = new TaskCompletionSource<TResult>();
+            OnCompleted(() =>
+            {
+                var r = continuationFunction(this);
+                tcs.TrySetResult(r);
+            });
+            return tcs.Task;
+        }
+
+        public static Task Delay(TimeSpan delay) => Delay((int)delay.TotalMilliseconds, CancellationToken.None);
+        public static Task Delay(TimeSpan delay, CancellationToken cancellationToken) => Delay((int)delay.TotalMilliseconds, cancellationToken);
+        public static Task Delay(int millisecondsDelay) => Delay(millisecondsDelay, CancellationToken.None);
+
+        public static Task Delay(int millisecondsDelay, CancellationToken cancellationToken)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            if (millisecondsDelay <= 0)
+            {
+                tcs.SetResult(false);
+                return tcs.Task;
+            }
+
+            Timer t = null;
+            t = new Timer(_ =>
+            {
+                t.Dispose();
+                tcs.TrySetResult(false);
+                t = null;
+                tcs = null;
+            }, null, millisecondsDelay, Timeout.Infinite);
+
+            if (cancellationToken != CancellationToken.None)
+            {
+                cancellationToken.Register(() =>
+                {
+                    t.Dispose();
+                    tcs.TrySetCanceled();
+                    t = null;
+                    tcs = null;
+                });
+            }
+
+            return tcs.Task;
+        }
     }
 }

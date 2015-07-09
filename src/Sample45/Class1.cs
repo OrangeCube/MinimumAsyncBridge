@@ -12,8 +12,8 @@ namespace Sample45
 
             for (int i = 0; i < 10; i++)
             {
-                await TaskEx.Delay(sec);
-                Console.WriteLine("Sample 4.5: " + i);
+                var j = await Task.Delay(sec).ContinueWith(_ => i * i);
+                Console.WriteLine("Sample 4.5: " + j);
             }
         }
     }

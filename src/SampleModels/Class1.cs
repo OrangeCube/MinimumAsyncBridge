@@ -18,6 +18,8 @@ namespace SampleModels
             observer.OnNext("1");
             await Observable.Timer(delay);
             observer.OnNext("2");
+            await Task.Delay(delay);
+            observer.OnNext("3");
 
             await I.Task.Delay(delay);
 

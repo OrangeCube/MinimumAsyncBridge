@@ -32,8 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IteratorTasks">
-      <HintPath>..\MinimumAsyncBridge\external\IteratorTasks.dll</HintPath>
+    <Reference Include="IteratorTasks, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IteratorTasks.1.0.0.0\lib\IteratorTasks.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -66,6 +67,12 @@
       <Project>{dd1b6107-a6a5-4bf8-b525-06fc7017cdd1}</Project>
       <Name>UniRx.AsyncBridge</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\IteratorTasks.1.0.0.0\tools\analyzers\IteratorTasksGenerator.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

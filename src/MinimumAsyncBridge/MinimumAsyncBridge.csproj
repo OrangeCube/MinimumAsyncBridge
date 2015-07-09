@@ -72,6 +72,12 @@
   <ItemGroup>
     <None Include="Runtime\CompilerServices\README.ja-jp.md" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MinimumThreadingBridge\MinimumThreadingBridge.csproj">
+      <Project>{c92c4e09-80e8-4b71-b7c9-918999c1d3e7}</Project>
+      <Name>MinimumThreadingBridge</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

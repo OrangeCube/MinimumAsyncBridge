@@ -11,10 +11,8 @@ namespace Sample35
 
             for (int i = 0; i < 10; i++)
             {
-                await TaskEx.Delay(sec);
-                Console.WriteLine("Sample 3.5: " + i);
-
-
+                var j = await Task.Delay(sec).ContinueWith(_ => i * i);
+                Console.WriteLine("Sample 3.5: " + j);
             }
         }
     }
