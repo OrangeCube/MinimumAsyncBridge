@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AggregateException.cs" />
+    <Compile Include="Runtime\CompilerServices\ConfiguredTaskAwaitable.cs" />
+    <Compile Include="Runtime\CompilerServices\ConfiguredTaskAwaitable`1.cs" />
     <Compile Include="Runtime\CompilerServices\TaskAwaiter`1.cs" />
     <Compile Include="Runtime\CompilerServices\TaskAwaiter.cs" />
     <Compile Include="Runtime\CompilerServices\AsyncMethodBuilderCore.cs" />

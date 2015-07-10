@@ -18,6 +18,8 @@ namespace System.Threading.Tasks
 
         public new TaskAwaiter<TResult> GetAwaiter() => new TaskAwaiter<TResult>(this);
 
+        public new ConfiguredTaskAwaitable<TResult> ConfigureAwait(bool continueOnCapturedContext) => new ConfiguredTaskAwaitable<TResult>(this, continueOnCapturedContext);
+
         internal new TResult GetResult()
         {
             if (Exception != null)
