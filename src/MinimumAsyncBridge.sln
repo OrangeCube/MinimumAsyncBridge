@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23023.0
+VisualStudioVersion = 14.0.23103.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimumAsyncBridge", "MinimumAsyncBridge\MinimumAsyncBridge.csproj", "{1F45E6F4-9601-4385-B96B-0A3A11C33A17}"
 EndProject
@@ -34,6 +34,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimumThreadingBridge", "MinimumThreadingBridge\MinimumThreadingBridge.csproj", "{C92C4E09-80E8-4B71-B7C9-918999C1D3E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimumThreadingBridge.V45", "MinimumThreadingBridge.V45\MinimumThreadingBridge.V45.csproj", "{D121CF4C-41C3-405B-96D1-89424A19575F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mvvm", "Mvvm", "{E9F8735E-9B83-493B-AC38-2BA84210B4C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmBridge", "MvvmBridge\MvvmBridge.csproj", "{3C19896F-0AE7-4C4E-830C-BF21B907A5A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmBridge.TypeForward", "MvvmBridge.TypeForward\MvvmBridge.TypeForward.csproj", "{A810D0EC-9006-45B5-8161-A093FF3B8564}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +91,14 @@ Global
 		{D121CF4C-41C3-405B-96D1-89424A19575F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D121CF4C-41C3-405B-96D1-89424A19575F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D121CF4C-41C3-405B-96D1-89424A19575F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C19896F-0AE7-4C4E-830C-BF21B907A5A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C19896F-0AE7-4C4E-830C-BF21B907A5A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C19896F-0AE7-4C4E-830C-BF21B907A5A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C19896F-0AE7-4C4E-830C-BF21B907A5A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A810D0EC-9006-45B5-8161-A093FF3B8564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A810D0EC-9006-45B5-8161-A093FF3B8564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A810D0EC-9006-45B5-8161-A093FF3B8564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A810D0EC-9006-45B5-8161-A093FF3B8564}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,5 +116,7 @@ Global
 		{52B7B891-BEDC-4F0B-8A13-272A4EACAC2D} = {5E3405CC-A300-4817-BECA-75CD37B21FF0}
 		{C92C4E09-80E8-4B71-B7C9-918999C1D3E7} = {EF5D7CBB-484D-4BF5-BD00-5AF676D69BDC}
 		{D121CF4C-41C3-405B-96D1-89424A19575F} = {EF5D7CBB-484D-4BF5-BD00-5AF676D69BDC}
+		{3C19896F-0AE7-4C4E-830C-BF21B907A5A1} = {E9F8735E-9B83-493B-AC38-2BA84210B4C7}
+		{A810D0EC-9006-45B5-8161-A093FF3B8564} = {E9F8735E-9B83-493B-AC38-2BA84210B4C7}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>MvvmBridge</id>
+    <version>1.0.0.0</version>
+    <title>MvvmBridge</title>
+    <authors>Nobuyuki Iwanaga</authors>
+    <owners>Nobuyuki Iwanaga</owners>
+    <licenseUrl>https://github.com/ufcpp/MinimumAsyncBridge/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ufcpp/MinimumAsyncBridge</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Miminum set of the MVVM portability libarary.</description>
+    <releaseNotes>Initial release. ObservableCollection, INotifyCollectionChanged</releaseNotes>
+    <copyright>Nobuyuki Iwanaga</copyright>
+    <tags>ObservableCollection, INotifyCollectionChanged</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" targetFramework="" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+      <file src="..\bin\Mvvm\net35\MinimumThreadingBridge.*" target="lib\net35\" />
+      <file src="..\bin\Mvvm\net45\MinimumThreadingBridge.*" target="lib\net45\" />
+  </files>
+</package>
