@@ -18,7 +18,7 @@
     </frameworkAssemblies>
   </metadata>
   <files>
-      <file src="..\bin\Threading\net35\*" target="lib\net35\" />
-      <file src="..\bin\Threading\net45\*" target="lib\net45\" />
+      <file src="..\bin\Threading\net35\MinimumThreadingBridge.*" target="lib\net35\" />
+      <file src="..\bin\Threading\net45\MinimumThreadingBridge.*" target="lib\net45\" />
   </files>
 </package>
