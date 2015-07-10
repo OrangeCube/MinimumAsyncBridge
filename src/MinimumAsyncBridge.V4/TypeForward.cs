@@ -22,3 +22,6 @@ using System.Threading.Tasks;
 
 [assembly: TypeForwardedTo(typeof(TaskAwaiter))]
 [assembly: TypeForwardedTo(typeof(TaskAwaiter<>))]
+
+[assembly: TypeForwardedTo(typeof(ConfiguredTaskAwaitable))]
+[assembly: TypeForwardedTo(typeof(ConfiguredTaskAwaitable<>))]

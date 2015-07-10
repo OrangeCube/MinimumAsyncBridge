@@ -57,22 +57,12 @@ namespace System.Threading.Tasks
 
         protected internal bool Complete()
         {
-            var sc = SynchronizationContext.Current;
-
             lock (_sync)
             {
                 if (Status == TaskStatus.Running)
                 {
                     Status = TaskStatus.RanToCompletion;
-
-                    if (sc == null)
-                    {
-                        _completed?.Invoke();
-                    }
-                    else
-                    {
-                        sc.Post(state => ((Action)state).Invoke(), _completed);
-                    }
+                    _completed?.Invoke();
                     return true;
                 }
                 return false;
@@ -83,11 +73,6 @@ namespace System.Threading.Tasks
         {
             while (!IsCompleted)
                 Thread.Sleep(10);
-        }
-
-        internal void UnsafeOnCompleted(Action continuation)
-        {
-            OnCompleted(continuation);
         }
 
         internal void OnCompleted(Action continuation)
@@ -114,6 +99,8 @@ namespace System.Threading.Tasks
         private Action _completed;
 
         public TaskAwaiter GetAwaiter() => new TaskAwaiter(this);
+
+        public ConfiguredTaskAwaitable ConfigureAwait(bool continueOnCapturedContext) => new ConfiguredTaskAwaitable(this, continueOnCapturedContext);
 
         internal void GetResult()
         {
