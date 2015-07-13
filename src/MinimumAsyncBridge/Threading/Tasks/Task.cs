@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace System.Threading.Tasks
 {
@@ -148,6 +150,69 @@ namespace System.Threading.Tasks
                 }
 
                 t.GetAwaiter().OnCompleted(() => tcs.TrySetResult(t));
+            }
+
+            return tcs.Task;
+        }
+
+        public static Task WhenAll(IEnumerable<Task> tasks) => WhenAll(tasks.ToArray());
+
+        public static Task WhenAll(params Task[] tasks)
+        {
+            var tcs = new TaskCompletionSource<object>();
+            int count = 0;
+
+            for (int i = 0; i < tasks.Length; i++)
+            {
+                var t = tasks[i];
+
+                if (t.IsCompleted)
+                {
+                    Interlocked.Increment(ref count);
+                    if (count == tasks.Length)
+                        tcs.TrySetResult(null);
+                    break;
+                }
+
+                t.GetAwaiter().OnCompleted(() =>
+                {
+                    Interlocked.Increment(ref count);
+                    if (count == tasks.Length)
+                        tcs.TrySetResult(null);
+                });
+            }
+
+            return tcs.Task;
+        }
+
+        public static Task<TResult[]> WhenAll<TResult>(IEnumerable<Task<TResult>> tasks) => WhenAll(tasks.ToArray());
+
+        public static Task<TResult[]> WhenAll<TResult>(params Task<TResult>[] tasks)
+        {
+            var tcs = new TaskCompletionSource<TResult[]>();
+            var results = new TResult[tasks.Length];
+            int count = 0;
+
+            for (int i = 0; i < tasks.Length; i++)
+            {
+                var t = tasks[i];
+
+                if (t.IsCompleted)
+                {
+                    results[i] = t.Result;
+                    Interlocked.Increment(ref count);
+                    if (count == tasks.Length)
+                        tcs.TrySetResult(results);
+                    break;
+                }
+
+                t.GetAwaiter().OnCompleted(() =>
+                {
+                    results[i] = t.Result;
+                    Interlocked.Increment(ref count);
+                    if (count == tasks.Length)
+                        tcs.TrySetResult(results);
+                });
             }
 
             return tcs.Task;
