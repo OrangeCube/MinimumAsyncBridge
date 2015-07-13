@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>MinimumAsyncBridge</id>
-    <version>0.9.5.0</version>
+    <version>0.9.6.0</version>
     <title>MinimumAsyncBridge</title>
     <authors>Nobuyuki Iwanaga</authors>
     <owners>Nobuyuki Iwanaga</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/OrangeCube/MinimumAsyncBridge</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Miminum set of the async/await portability libarary.</description>
-    <releaseNotes>ConfigureAwait.</releaseNotes>
+    <releaseNotes>WhenAll.</releaseNotes>
     <copyright>Nobuyuki Iwanaga</copyright>
     <tags>AsyncBridge, async, await</tags>
     <frameworkAssemblies>
