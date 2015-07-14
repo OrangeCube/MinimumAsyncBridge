@@ -119,6 +119,20 @@ namespace System.Threading.Tasks
 
         public static Task CompletedTask { get; } = FromResult<object>(null);
 
+        public static Task FromException(Exception exception)
+        {
+            var tcs = new TaskCompletionSource<object>();
+            tcs.SetException(exception);
+            return tcs.Task;
+        }
+
+        public static Task<TResult> FromException<TResult>(Exception exception)
+        {
+            var tcs = new TaskCompletionSource<TResult>();
+            tcs.SetException(exception);
+            return tcs.Task;
+        }
+
         public static Task<Task> WhenAny(params Task[] tasks)
         {
             var tcs = new TaskCompletionSource<Task>();
@@ -171,15 +185,16 @@ namespace System.Threading.Tasks
                     Interlocked.Increment(ref count);
                     if (count == tasks.Length)
                         tcs.TrySetResult(null);
-                    break;
                 }
-
-                t.OnCompleted(() =>
+                else
                 {
-                    Interlocked.Increment(ref count);
-                    if (count == tasks.Length)
-                        tcs.TrySetResult(null);
-                });
+                    t.OnCompleted(() =>
+                    {
+                        Interlocked.Increment(ref count);
+                        if (count == tasks.Length)
+                            tcs.TrySetResult(null);
+                    });
+                }
             }
 
             return tcs.Task;
@@ -204,16 +219,17 @@ namespace System.Threading.Tasks
                     Interlocked.Increment(ref count);
                     if (count == tasks.Length)
                         tcs.TrySetResult(results);
-                    break;
                 }
-
-                t.OnCompleted(() =>
+                else
                 {
-                    results[i] = t.Result;
-                    Interlocked.Increment(ref count);
-                    if (count == tasks.Length)
-                        tcs.TrySetResult(results);
-                });
+                    t.OnCompleted(() =>
+                    {
+                        results[i] = t.Result;
+                        Interlocked.Increment(ref count);
+                        if (count == tasks.Length)
+                            tcs.TrySetResult(results);
+                    });
+                }
             }
 
             return tcs.Task;
