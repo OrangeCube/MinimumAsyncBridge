@@ -131,7 +131,7 @@ namespace System.Threading.Tasks
                     break;
                 }
 
-                t.GetAwaiter().OnCompleted(() => tcs.TrySetResult(t));
+                t.OnCompleted(() => tcs.TrySetResult(t));
             }
 
             return tcs.Task;
@@ -149,7 +149,7 @@ namespace System.Threading.Tasks
                     break;
                 }
 
-                t.GetAwaiter().OnCompleted(() => tcs.TrySetResult(t));
+                t.OnCompleted(() => tcs.TrySetResult(t));
             }
 
             return tcs.Task;
@@ -174,7 +174,7 @@ namespace System.Threading.Tasks
                     break;
                 }
 
-                t.GetAwaiter().OnCompleted(() =>
+                t.OnCompleted(() =>
                 {
                     Interlocked.Increment(ref count);
                     if (count == tasks.Length)
@@ -193,8 +193,9 @@ namespace System.Threading.Tasks
             var results = new TResult[tasks.Length];
             int count = 0;
 
-            for (int i = 0; i < tasks.Length; i++)
+            for (var j = 0; j < tasks.Length; j++)
             {
+                var i = j;
                 var t = tasks[i];
 
                 if (t.IsCompleted)
@@ -206,7 +207,7 @@ namespace System.Threading.Tasks
                     break;
                 }
 
-                t.GetAwaiter().OnCompleted(() =>
+                t.OnCompleted(() =>
                 {
                     results[i] = t.Result;
                     Interlocked.Increment(ref count);
