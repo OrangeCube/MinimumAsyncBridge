@@ -1,33 +1,15 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace System
 {
-    [Serializable]
-    internal class AggregateException : Exception
+    public class AggregateException : Exception
     {
-        private Exception ex;
-        private Exception exception;
+        public ReadOnlyCollection<Exception> InnerExceptions { get; }
 
-        public AggregateException()
+        public AggregateException(params Exception[] exceptions) : base("", exceptions.FirstOrDefault())
         {
-        }
-
-        public AggregateException(string message) : base(message)
-        {
-        }
-
-        public AggregateException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        public AggregateException(Exception exception, Exception ex)
-        {
-            this.exception = exception;
-            this.ex = ex;
-        }
-
-        protected AggregateException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
+            InnerExceptions = new ReadOnlyCollection<Exception>(exceptions);
         }
     }
 }
