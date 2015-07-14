@@ -119,6 +119,20 @@ namespace System.Threading.Tasks
 
         public static Task CompletedTask { get; } = FromResult<object>(null);
 
+        public static Task FromException(Exception exception)
+        {
+            var tcs = new TaskCompletionSource<object>();
+            tcs.SetException(exception);
+            return tcs.Task;
+        }
+
+        public static Task<TResult> FromException<TResult>(Exception exception)
+        {
+            var tcs = new TaskCompletionSource<TResult>();
+            tcs.SetException(exception);
+            return tcs.Task;
+        }
+
         public static Task<Task> WhenAny(params Task[] tasks)
         {
             var tcs = new TaskCompletionSource<Task>();

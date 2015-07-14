@@ -45,6 +45,26 @@ namespace MinimuAsyncBridgeUnitTest
         }
 
         [TestMethod]
+        public void TestFromException()
+        {
+            AwaitOnTaskFromExceptionShouldThrow().Wait();
+        }
+
+        private async Task AwaitOnTaskFromExceptionShouldThrow()
+        {
+            try
+            {
+                await Task.FromException<int>(new InvalidOperationException());
+            }
+            catch (InvalidOperationException)
+            {
+                return;
+            }
+
+            Assert.Fail();
+        }
+
+        [TestMethod]
         public void TestWhenAll()
         {
             WhenAllForCompletedTask().Wait();
