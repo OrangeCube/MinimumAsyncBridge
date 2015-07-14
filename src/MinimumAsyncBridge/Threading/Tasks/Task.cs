@@ -219,16 +219,17 @@ namespace System.Threading.Tasks
                     Interlocked.Increment(ref count);
                     if (count == tasks.Length)
                         tcs.TrySetResult(results);
-                    break;
                 }
-
-                t.OnCompleted(() =>
+                else
                 {
-                    results[i] = t.Result;
-                    Interlocked.Increment(ref count);
-                    if (count == tasks.Length)
-                        tcs.TrySetResult(results);
-                });
+                    t.OnCompleted(() =>
+                    {
+                        results[i] = t.Result;
+                        Interlocked.Increment(ref count);
+                        if (count == tasks.Length)
+                            tcs.TrySetResult(results);
+                    });
+                }
             }
 
             return tcs.Task;
