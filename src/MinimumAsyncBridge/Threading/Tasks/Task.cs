@@ -35,6 +35,7 @@ namespace System.Threading.Tasks
                 if (Status == TaskStatus.Running)
                 {
                     Status = TaskStatus.Canceled;
+                    _completed?.Invoke();
                     return true;
                 }
                 return false;
@@ -49,6 +50,7 @@ namespace System.Threading.Tasks
                 {
                     Status = TaskStatus.Faulted;
                     Exception = exception;
+                    _completed?.Invoke();
                     return true;
                 }
                 return false;
@@ -57,13 +59,14 @@ namespace System.Threading.Tasks
 
         public Exception Exception { get; private set; }
 
-        protected internal bool Complete()
+        protected internal bool Complete(Action onComplete)
         {
             lock (_sync)
             {
                 if (Status == TaskStatus.Running)
                 {
                     Status = TaskStatus.RanToCompletion;
+                    onComplete();
                     _completed?.Invoke();
                     return true;
                 }
@@ -75,6 +78,8 @@ namespace System.Threading.Tasks
         {
             while (!IsCompleted)
                 Thread.Sleep(10);
+            if (Exception != null)
+                throw Exception;
         }
 
         internal void OnCompleted(Action continuation)
@@ -284,10 +289,12 @@ namespace System.Threading.Tasks
             {
                 cancellationToken.Register(() =>
                 {
-                    t.Dispose();
-                    tcs.TrySetCanceled();
-                    t = null;
-                    tcs = null;
+                    if (tcs.TrySetCanceled())
+                    {
+                        t.Dispose();
+                        t = null;
+                        tcs = null;
+                    }
                 });
             }
 
