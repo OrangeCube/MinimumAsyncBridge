@@ -12,8 +12,7 @@ namespace System.Threading.Tasks
 
         internal bool SetResult(TResult result)
         {
-            Result = result;
-            return Complete();
+            return Complete(() => Result = result);
         }
 
         public new TaskAwaiter<TResult> GetAwaiter() => new TaskAwaiter<TResult>(this);

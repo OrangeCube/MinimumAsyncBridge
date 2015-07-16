@@ -14,12 +14,12 @@
         public void Cancel()
         {
             if (IsCancellationRequested) return;
+            IsCancellationRequested = true;
 
             var d = _canceled;
             if (d != null) d();
             d = null;
 
-            IsCancellationRequested = true;
         }
 
         internal event Action Canceled
