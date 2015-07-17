@@ -16,7 +16,7 @@ namespace MinimuAsyncBridgeUnitTest
         }
 
         [TestMethod]
-        public void WhenAnyShouldBeCanceledIfFirstItemOfTheTasksIsCancled()
+        public void WhenAnyShouldBeCanceledIfFirstItemOfTheTasksIsCanceled()
         {
             WhenAnyShouldBeCanceledIfFirstItemOfTheTasksIsCancledAsync().Wait();
             WhenAnyShouldBeCanceledIfFirstItemOfTheTasksOfTResultIsCancledAsync().Wait();
