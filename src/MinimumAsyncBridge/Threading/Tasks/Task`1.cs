@@ -8,7 +8,17 @@ namespace System.Threading.Tasks
     /// <typeparam name="TResult"></typeparam>
     public class Task<TResult> : Task
     {
-        public TResult Result { get; private set; }
+        public TResult Result
+        {
+            get
+            {
+                if (Status == TaskStatus.Running)
+                    Wait();
+                return GetResult();
+            }
+            private set { _result = value; }
+        }
+        private TResult _result;
 
         internal bool SetResult(TResult result)
         {
@@ -24,7 +34,10 @@ namespace System.Threading.Tasks
             if (Exception != null)
                 throw Exception;
 
-            return Result;
+            if (IsCanceled)
+                throw new TaskCanceledException();
+
+            return _result;
         }
 
         public Task ContinueWith(Action<Task<TResult>> continuationAction)
