@@ -182,6 +182,7 @@ namespace System.Threading.Tasks
         public static Task WhenAll(params Task[] tasks)
         {
             var tcs = new TaskCompletionSource<object>();
+            var exceptions = new List<Exception>();
             int count = 0;
 
             for (int i = 0; i < tasks.Length; i++)
@@ -190,17 +191,19 @@ namespace System.Threading.Tasks
 
                 if (t.IsCompleted)
                 {
-                    Interlocked.Increment(ref count);
-                    if (count == tasks.Length)
-                        tcs.TrySetResult(null);
+                    if (t.IsFaulted)
+                        exceptions.Add(t.Exception);
+
+                    CheckWhenAllCompletetion(tasks, tcs, null, exceptions, ref count);
                 }
                 else
                 {
                     t.OnCompleted(() =>
                     {
-                        Interlocked.Increment(ref count);
-                        if (count == tasks.Length)
-                            tcs.TrySetResult(null);
+                        if (t.IsFaulted)
+                            exceptions.Add(t.Exception);
+
+                        CheckWhenAllCompletetion(tasks, tcs, null, exceptions, ref count);
                     });
                 }
             }
@@ -208,11 +211,26 @@ namespace System.Threading.Tasks
             return tcs.Task;
         }
 
+        private static void CheckWhenAllCompletetion<TResult>(Task[] tasks, TaskCompletionSource<TResult> tcs, TResult result, List<Exception> exceptions, ref int count)
+        {
+            Interlocked.Increment(ref count);
+            if (count == tasks.Length)
+            {
+                if (exceptions.Any())
+                    tcs.TrySetException(new AggregateException(exceptions.ToArray()));
+                else if (tasks.Any(x => x.IsCanceled))
+                    tcs.TrySetCanceled();
+                else
+                    tcs.TrySetResult(result);
+            }
+        }
+
         public static Task<TResult[]> WhenAll<TResult>(IEnumerable<Task<TResult>> tasks) => WhenAll(tasks.ToArray());
 
         public static Task<TResult[]> WhenAll<TResult>(params Task<TResult>[] tasks)
         {
             var tcs = new TaskCompletionSource<TResult[]>();
+            var exceptions = new List<Exception>();
             var results = new TResult[tasks.Length];
             int count = 0;
 
@@ -223,19 +241,23 @@ namespace System.Threading.Tasks
 
                 if (t.IsCompleted)
                 {
-                    results[i] = t.Result;
-                    Interlocked.Increment(ref count);
-                    if (count == tasks.Length)
-                        tcs.TrySetResult(results);
+                    if (t.IsFaulted)
+                        exceptions.Add(t.Exception);
+                    else if(!t.IsCanceled)
+                        results[i] = t.Result;
+
+                    CheckWhenAllCompletetion(tasks, tcs, results, exceptions, ref count);
                 }
                 else
                 {
                     t.OnCompleted(() =>
                     {
-                        results[i] = t.Result;
-                        Interlocked.Increment(ref count);
-                        if (count == tasks.Length)
-                            tcs.TrySetResult(results);
+                        if (t.IsFaulted)
+                            exceptions.Add(t.Exception);
+                        else if (!t.IsCanceled)
+                            results[i] = t.Result;
+
+                        CheckWhenAllCompletetion(tasks, tcs, results, exceptions, ref count);
                     });
                 }
             }
