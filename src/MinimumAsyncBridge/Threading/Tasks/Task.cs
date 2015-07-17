@@ -113,6 +113,9 @@ namespace System.Threading.Tasks
         {
             if(Exception != null)
                 throw Exception;
+
+            if (IsCanceled)
+                throw new TaskCanceledException();
         }
 
         public static Task<TResult> FromResult<TResult>(TResult value)
