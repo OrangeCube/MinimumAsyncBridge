@@ -289,7 +289,7 @@ namespace System.Threading.Tasks
             {
                 cancellationToken.Register(() =>
                 {
-                    if (tcs.TrySetCanceled())
+                    if (tcs != null && tcs.TrySetCanceled())
                     {
                         t.Dispose();
                         t = null;
