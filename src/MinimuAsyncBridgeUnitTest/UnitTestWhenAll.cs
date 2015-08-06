@@ -63,7 +63,7 @@ namespace MinimuAsyncBridgeUnitTest
         }
 
         [TestMethod]
-        public void TestWhenAllShoudBeResultsOrderIsGuaranteed()
+        public void ResultsOfWhenAllShouldHaveDefinitOrder()
         {
             WhenAllShoudBeResultsOrderIsGuaranteed().Wait();
         }
@@ -90,15 +90,15 @@ namespace MinimuAsyncBridgeUnitTest
 
         #region cancel
         [TestMethod]
-        public void TestWhenAllShouldBeCanceledIfSomeOneIsCanceled()
+        public void TestWhenAllShouldBeCanceledIfAnyOfTheTaskIsCanceled()
         {
-            WhenAllShouldBeCanceledIfSomeOneIsCanceled().Wait();
-            WhenAllShouldBeCanceledIfSomeOneIsCanceledWithTResult().Wait();
-            WhenAllShouldBeCanceledIfSomeOneIsCanceledAsync().Wait();
-            WhenAllShouldBeCanceledIfSomeOneIsCanceledWithTResultAsync().Wait();
+            WhenAllShouldBeCanceledIfAnyOfTheTaskIsCanceled().Wait();
+            WhenAllShouldBeCanceledIfAnyOfTheTaskIsCanceledWithTResult().Wait();
+            WhenAllShouldBeCanceledIfAnyOfTheTaskIsCanceledAsync().Wait();
+            WhenAllShouldBeCanceledIfAnyOfTheTaskIsCanceledWithTResultAsync().Wait();
         }
 
-        private async Task WhenAllShouldBeCanceledIfSomeOneIsCanceled()
+        private async Task WhenAllShouldBeCanceledIfAnyOfTheTaskIsCanceled()
         {
             var tcs1 = new TaskCompletionSource<object>();
             tcs1.TrySetCanceled();
@@ -121,7 +121,7 @@ namespace MinimuAsyncBridgeUnitTest
             Assert.AreEqual(exceptionCount, 1);
         }
 
-        private async Task WhenAllShouldBeCanceledIfSomeOneIsCanceledWithTResult()
+        private async Task WhenAllShouldBeCanceledIfAnyOfTheTaskIsCanceledWithTResult()
         {
             var tcs1 = new TaskCompletionSource<object>();
             tcs1.TrySetCanceled();
@@ -156,7 +156,7 @@ namespace MinimuAsyncBridgeUnitTest
             Assert.AreEqual(exceptionCount, 2);
         }
 
-        private async Task WhenAllShouldBeCanceledIfSomeOneIsCanceledAsync()
+        private async Task WhenAllShouldBeCanceledIfAnyOfTheTaskIsCanceledAsync()
         {
             var tcs1 = new TaskCompletionSource<object>();
             Task.Delay(10).ContinueWith(_ => tcs1.TrySetCanceled());
@@ -179,7 +179,7 @@ namespace MinimuAsyncBridgeUnitTest
             Assert.AreEqual(exceptionCount, 1);
         }
 
-        private async Task WhenAllShouldBeCanceledIfSomeOneIsCanceledWithTResultAsync()
+        private async Task WhenAllShouldBeCanceledIfAnyOfTheTaskIsCanceledWithTResultAsync()
         {
             var tcs1 = new TaskCompletionSource<object>();
             Task.Delay(10).ContinueWith(_ => tcs1.TrySetCanceled());
@@ -217,15 +217,15 @@ namespace MinimuAsyncBridgeUnitTest
 
         #region exception
         [TestMethod]
-        public void TestWhenAllShouldHasExceptionsIfSomeOneGetException()
+        public void TestWhenAllShouldHasExceptionsIfAnyOfTheTaskGetException()
         {
-            WhenAllShouldHasExceptionsIfSomeOneGetException().Wait();
-            WhenAllShouldHasExceptionsIfSomeOneGetExceptionWithTResult().Wait();
-            WhenAllShouldHasExceptionsIfSomeOneGetExceptionAsync().Wait();
-            WhenAllShouldHasExceptionsIfSomeOneGetExceptionWithTResultAsync().Wait();
+            WhenAllShouldHasExceptionsIfAnyOfTheTaskGetException().Wait();
+            WhenAllShouldHasExceptionsIfAnyOfTheTaskGetExceptionWithTResult().Wait();
+            WhenAllShouldHasExceptionsIfAnyOfTheTaskGetExceptionAsync().Wait();
+            WhenAllShouldHasExceptionsIfAnyOfTheTaskGetExceptionWithTResultAsync().Wait();
         }
 
-        private async Task WhenAllShouldHasExceptionsIfSomeOneGetException()
+        private async Task WhenAllShouldHasExceptionsIfAnyOfTheTaskGetException()
         {
             var tcs1 = new TaskCompletionSource<object>();
             tcs1.TrySetCanceled();
@@ -258,7 +258,7 @@ namespace MinimuAsyncBridgeUnitTest
             Assert.AreEqual(exceptionCount, 1);
         }
 
-        private async Task WhenAllShouldHasExceptionsIfSomeOneGetExceptionWithTResult()
+        private async Task WhenAllShouldHasExceptionsIfAnyOfTheTaskGetExceptionWithTResult()
         {
             var tcs1 = new TaskCompletionSource<object>();
             tcs1.TrySetCanceled();
@@ -305,7 +305,7 @@ namespace MinimuAsyncBridgeUnitTest
             Assert.AreEqual(exceptionCount, 2);
         }
 
-        private async Task WhenAllShouldHasExceptionsIfSomeOneGetExceptionAsync()
+        private async Task WhenAllShouldHasExceptionsIfAnyOfTheTaskGetExceptionAsync()
         {
             var tcs1 = new TaskCompletionSource<object>();
             Task.Delay(10).ContinueWith(_ => tcs1.TrySetCanceled());
@@ -338,7 +338,7 @@ namespace MinimuAsyncBridgeUnitTest
             Assert.AreEqual(exceptionCount, 1);
         }
 
-        private async Task WhenAllShouldHasExceptionsIfSomeOneGetExceptionWithTResultAsync()
+        private async Task WhenAllShouldHasExceptionsIfAnyOfTheTaskGetExceptionWithTResultAsync()
         {
             var tcs1 = new TaskCompletionSource<object>();
             Task.Delay(10).ContinueWith(_ => tcs1.TrySetCanceled());
