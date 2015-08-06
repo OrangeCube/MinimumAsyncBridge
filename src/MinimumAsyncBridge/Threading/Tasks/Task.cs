@@ -143,6 +143,9 @@ namespace System.Threading.Tasks
 
         public static Task<Task> WhenAny(params Task[] tasks)
         {
+            if (tasks == null) throw new ArgumentNullException(nameof(tasks));
+            if (tasks.Length == 0) throw new ArgumentException(nameof(tasks) + " empty", nameof(tasks));
+
             var tcs = new TaskCompletionSource<Task>();
 
             foreach (var t in tasks)
@@ -161,6 +164,9 @@ namespace System.Threading.Tasks
 
         public static Task<Task<TResult>> WhenAny<TResult>(params Task<TResult>[] tasks)
         {
+            if (tasks == null) throw new ArgumentNullException(nameof(tasks));
+            if (tasks.Length == 0) throw new ArgumentException(nameof(tasks) + " empty", nameof(tasks));
+
             var tcs = new TaskCompletionSource<Task<TResult>>();
 
             foreach (var t in tasks)
@@ -181,6 +187,9 @@ namespace System.Threading.Tasks
 
         public static Task WhenAll(params Task[] tasks)
         {
+            if (tasks == null) throw new ArgumentNullException(nameof(tasks));
+            if (tasks.Length == 0) return CompletedTask;
+
             var tcs = new TaskCompletionSource<object>();
             var exceptions = new List<Exception>();
             int count = 0;
@@ -192,6 +201,7 @@ namespace System.Threading.Tasks
                 if (t.IsCompleted)
                 {
                     if (t.IsFaulted)
+                        lock (exceptions)
                         exceptions.Add(t.Exception);
 
                     CheckWhenAllCompletetion(tasks, tcs, null, exceptions, ref count);
@@ -201,7 +211,8 @@ namespace System.Threading.Tasks
                     t.OnCompleted(() =>
                     {
                         if (t.IsFaulted)
-                            exceptions.Add(t.Exception);
+                            lock (exceptions)
+                                exceptions.Add(t.Exception);
 
                         CheckWhenAllCompletetion(tasks, tcs, null, exceptions, ref count);
                     });
@@ -216,7 +227,10 @@ namespace System.Threading.Tasks
             Interlocked.Increment(ref count);
             if (count == tasks.Length)
             {
-                if (exceptions.Any())
+                bool any;
+                lock (exceptions)
+                    any = exceptions.Any();
+                if (any)
                     tcs.TrySetException(new AggregateException(exceptions.ToArray()));
                 else if (tasks.Any(x => x.IsCanceled))
                     tcs.TrySetCanceled();
@@ -229,6 +243,9 @@ namespace System.Threading.Tasks
 
         public static Task<TResult[]> WhenAll<TResult>(params Task<TResult>[] tasks)
         {
+            if (tasks == null) throw new ArgumentNullException(nameof(tasks));
+            if (tasks.Length == 0) return FromResult(new TResult[0]);
+
             var tcs = new TaskCompletionSource<TResult[]>();
             var exceptions = new List<Exception>();
             var results = new TResult[tasks.Length];
@@ -242,8 +259,9 @@ namespace System.Threading.Tasks
                 if (t.IsCompleted)
                 {
                     if (t.IsFaulted)
-                        exceptions.Add(t.Exception);
-                    else if(!t.IsCanceled)
+                        lock (exceptions)
+                            exceptions.Add(t.Exception);
+                    else if (!t.IsCanceled)
                         results[i] = t.Result;
 
                     CheckWhenAllCompletetion(tasks, tcs, results, exceptions, ref count);
@@ -253,7 +271,8 @@ namespace System.Threading.Tasks
                     t.OnCompleted(() =>
                     {
                         if (t.IsFaulted)
-                            exceptions.Add(t.Exception);
+                            lock (exceptions)
+                                exceptions.Add(t.Exception);
                         else if (!t.IsCanceled)
                             results[i] = t.Result;
 
