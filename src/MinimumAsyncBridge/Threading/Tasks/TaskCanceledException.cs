@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents an exception used to communicate task cancellation.
     /// </summary>
-    public class TaskCanceledException : Exception
+    public class TaskCanceledException : OperationCanceledException
     {
         /// <summary>
         /// Initializes a new instance of the TaskCanceledException class with a system-supplied message that describes the error.
