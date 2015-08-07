@@ -17,13 +17,15 @@
             }
         }
 
-        public void Register(Action callback)
+        public CancellationTokenRegistration Register(Action callback)
         {
             if (_source != null)
             {
                 if (_source.IsCancellationRequested) callback();
                 _source.Canceled += callback;
             }
+
+            return default(CancellationTokenRegistration);
         }
 
         public static CancellationToken None { get; } = new CancellationToken();

@@ -41,6 +41,7 @@
     <Compile Include="IProgress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Threading\CancellationToken.cs" />
+    <Compile Include="Threading\CancellationTokenRegistration.cs" />
     <Compile Include="Threading\CancellationTokenSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
