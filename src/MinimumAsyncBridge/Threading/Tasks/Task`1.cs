@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace System.Threading.Tasks
 {
@@ -32,7 +33,7 @@ namespace System.Threading.Tasks
         internal new TResult GetResult()
         {
             if (Exception != null)
-                throw Exception;
+                throw Exception.InnerExceptions.First();
 
             if (IsCanceled)
                 throw new TaskCanceledException();

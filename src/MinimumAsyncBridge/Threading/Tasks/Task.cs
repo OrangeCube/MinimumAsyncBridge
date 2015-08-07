@@ -120,7 +120,7 @@ namespace System.Threading.Tasks
         internal void GetResult()
         {
             if(Exception != null)
-                throw Exception;
+                throw Exception.InnerExceptions.First();
 
             if (IsCanceled)
                 throw new TaskCanceledException();
