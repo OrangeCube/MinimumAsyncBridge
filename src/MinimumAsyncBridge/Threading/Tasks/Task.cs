@@ -49,7 +49,7 @@ namespace System.Threading.Tasks
                 if (Status == TaskStatus.Running)
                 {
                     Status = TaskStatus.Faulted;
-                    Exception = exception;
+                    MergeException(exception);
                     _completed?.Invoke();
                     return true;
                 }
@@ -57,7 +57,15 @@ namespace System.Threading.Tasks
             }
         }
 
-        public Exception Exception { get; private set; }
+        private void MergeException(Exception ex)
+        {
+            if (Exception == null)
+                Exception = new AggregateException(ex);
+            else
+                Exception = new AggregateException(new[] { ex }.Concat(Exception.InnerExceptions).ToArray());
+        }
+
+        public AggregateException Exception { get; private set; }
 
         protected internal bool Complete(Action onComplete)
         {

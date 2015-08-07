@@ -25,7 +25,7 @@
                 _source.Canceled += callback;
             }
 
-            return default(CancellationTokenRegistration);
+            return new CancellationTokenRegistration(_source, callback);
         }
 
         public static CancellationToken None { get; } = new CancellationToken();

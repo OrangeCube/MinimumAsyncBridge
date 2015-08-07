@@ -6,3 +6,4 @@ using System.Threading;
 
 [assembly: TypeForwardedTo(typeof(CancellationTokenSource))]
 [assembly: TypeForwardedTo(typeof(CancellationToken))]
+[assembly: TypeForwardedTo(typeof(CancellationTokenRegistration))]
