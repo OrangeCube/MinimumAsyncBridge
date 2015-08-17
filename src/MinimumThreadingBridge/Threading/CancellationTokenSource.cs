@@ -39,5 +39,24 @@
             remove { _canceled -= value; }
         }
         private Action _canceled;
+
+        public void CancelAfter(TimeSpan delay) => CancelAfter((int)delay.TotalMilliseconds);
+
+        public void CancelAfter(int millisecondsDelay)
+        {
+            if (millisecondsDelay <= 0)
+            {
+                Cancel();
+                return;
+            }
+
+            Timer t = null;
+            t = new Timer(_ =>
+            {
+                t.Dispose();
+                Cancel();
+                t = null;
+            }, null, millisecondsDelay, Timeout.Infinite);
+        }
     }
 }
