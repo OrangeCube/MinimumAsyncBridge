@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>MinimumAsyncBridge</id>
-    <version>0.9.18.0</version>
+    <version>0.9.18.1</version>
     <title>MinimumAsyncBridge</title>
     <authors>Nobuyuki Iwanaga</authors>
     <owners>Nobuyuki Iwanaga</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/OrangeCube/MinimumAsyncBridge</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Miminum set of the async/await portability libarary.</description>
-    <releaseNotes>Bug fix: argument check on WhenAny/WhenAll. TaskCanceldException : OpeartionCanceledException.</releaseNotes>
+    <releaseNotes>Bug fix: Task.Delay.</releaseNotes>
     <copyright>Nobuyuki Iwanaga</copyright>
     <tags>AsyncBridge, async, await</tags>
     <frameworkAssemblies>

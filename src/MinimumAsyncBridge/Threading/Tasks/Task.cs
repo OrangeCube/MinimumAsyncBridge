@@ -331,21 +331,41 @@ namespace System.Threading.Tasks
             Timer t = null;
             t = new Timer(_ =>
             {
-                t.Dispose();
-                tcs.TrySetResult(false);
-                t = null;
-                tcs = null;
+                bool done = false;
+                TaskCompletionSource<bool> tcs1;
+
+                lock (t)
+                {
+                    done = tcs == null;
+                    tcs1 = tcs;
+                    tcs = null;
+                }
+
+                if (!done)
+                {
+                    t.Dispose();
+                    tcs1.TrySetResult(false);
+                }
             }, null, millisecondsDelay, Timeout.Infinite);
 
             if (cancellationToken != CancellationToken.None)
             {
                 cancellationToken.Register(() =>
                 {
-                    if (tcs != null && tcs.TrySetCanceled())
+                    bool done = false;
+                    TaskCompletionSource<bool> tcs1;
+
+                    lock (t)
+                    {
+                        done = tcs == null;
+                        tcs1 = tcs;
+                        tcs = null;
+                    }
+
+                    if (!done)
                     {
                         t.Dispose();
-                        t = null;
-                        tcs = null;
+                        tcs1.TrySetCanceled();
                     }
                 });
             }
