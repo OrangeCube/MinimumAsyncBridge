@@ -48,5 +48,32 @@ namespace MinimuAsyncBridgeUnitTest
 
             Assert.AreEqual(d2.Status, TaskStatus.Canceled);
         }
+
+
+        [TestMethod]
+        public void TaskDelayWithInitiallyCanceledToken()
+        {
+            TaskDelayWithInitiallyCanceledTokenAsync().Wait();
+        }
+
+        private async Task TaskDelayWithInitiallyCanceledTokenAsync()
+        {
+            var cts1 = new CancellationTokenSource();
+            cts1.Cancel();
+            var d1 = Task.Delay(1000, cts1.Token);
+            Assert.AreEqual(d1.Status, TaskStatus.Canceled);
+
+            var exceptionCount = 0;
+            try
+            {
+                await d1;
+            }
+            catch(Exception ex)
+            {
+                Assert.AreEqual(ex.GetType(), typeof(TaskCanceledException));
+                exceptionCount++;
+            }
+            Assert.AreEqual(exceptionCount, 1);
+        }
     }
 }

@@ -322,6 +322,12 @@ namespace System.Threading.Tasks
         {
             var tcs = new TaskCompletionSource<bool>();
 
+            if (cancellationToken.IsCancellationRequested)
+            {
+                tcs.SetCanceled();
+                return tcs.Task;
+            }
+
             if (millisecondsDelay <= 0)
             {
                 tcs.SetResult(false);
