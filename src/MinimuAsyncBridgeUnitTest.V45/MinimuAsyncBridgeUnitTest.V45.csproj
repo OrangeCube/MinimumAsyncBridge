@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{168281F0-F487-4D7B-B9F1-0CF1A58A7F85}</ProjectGuid>
+    <ProjectGuid>{1E5706E8-B89D-4969-B298-FD4659B67E5D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MinimuAsyncBridgeUnitTest</RootNamespace>
-    <AssemblyName>MinimuAsyncBridgeUnitTest</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>MinimuAsyncBridgeUnitTest.V45</RootNamespace>
+    <AssemblyName>MinimuAsyncBridgeUnitTest.V45</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -56,21 +56,31 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTestTaskCompletionSource.cs" />
-    <Compile Include="UnitTestTaskDelay.cs" />
-    <Compile Include="UnitTestCore.cs" />
-    <Compile Include="UnitTestWhenAny.cs" />
-    <Compile Include="UnitTestWhenAll.cs" />
+    <Compile Include="..\MinimuAsyncBridgeUnitTest\UnitTestCore.cs">
+      <Link>UnitTestCore.cs</Link>
+    </Compile>
+    <Compile Include="..\MinimuAsyncBridgeUnitTest\UnitTestTaskCompletionSource.cs">
+      <Link>UnitTestTaskCompletionSource.cs</Link>
+    </Compile>
+    <Compile Include="..\MinimuAsyncBridgeUnitTest\UnitTestTaskDelay.cs">
+      <Link>UnitTestTaskDelay.cs</Link>
+    </Compile>
+    <Compile Include="..\MinimuAsyncBridgeUnitTest\UnitTestWhenAll.cs">
+      <Link>UnitTestWhenAll.cs</Link>
+    </Compile>
+    <Compile Include="..\MinimuAsyncBridgeUnitTest\UnitTestWhenAny.cs">
+      <Link>UnitTestWhenAny.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MinimumAsyncBridge\MinimumAsyncBridge.csproj">
-      <Project>{1f45e6f4-9601-4385-b96b-0a3a11c33a17}</Project>
-      <Name>MinimumAsyncBridge</Name>
+    <ProjectReference Include="..\MinimumAsyncBridge.V4\MinimumAsyncBridge.V45.csproj">
+      <Project>{1d1df845-cdb9-47ad-9595-e23cac84cf65}</Project>
+      <Name>MinimumAsyncBridge.V45</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MinimumThreadingBridge\MinimumThreadingBridge.csproj">
-      <Project>{c92c4e09-80e8-4b71-b7c9-918999c1d3e7}</Project>
-      <Name>MinimumThreadingBridge</Name>
+    <ProjectReference Include="..\MinimumThreadingBridge.V45\MinimumThreadingBridge.V45.csproj">
+      <Project>{d121cf4c-41c3-405b-96d1-89424a19575f}</Project>
+      <Name>MinimumThreadingBridge.V45</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
