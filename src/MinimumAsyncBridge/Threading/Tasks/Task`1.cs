@@ -15,6 +15,13 @@ namespace System.Threading.Tasks
             {
                 if (Status == TaskStatus.Running)
                     Wait();
+
+                if (Exception != null)
+                    throw Exception;
+
+                if (IsCanceled)
+                    throw new AggregateException(new TaskCanceledException());
+
                 return GetResult();
             }
             private set { _result = value; }

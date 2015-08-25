@@ -59,10 +59,21 @@ namespace System.Threading.Tasks
 
         private void MergeException(Exception ex)
         {
+            var agex = ex as AggregateException;
             if (Exception == null)
-                Exception = new AggregateException(ex);
+            {
+                if (agex != null)
+                    Exception = agex;
+                else
+                    Exception = new AggregateException(ex);
+            }
             else
-                Exception = new AggregateException(new[] { ex }.Concat(Exception.InnerExceptions).ToArray());
+            {
+                if (agex != null)
+                    Exception = new AggregateException(Exception.InnerExceptions.Concat(agex.InnerExceptions).ToArray());
+                else
+                    Exception = new AggregateException(Exception.InnerExceptions.Concat(new[] { ex }).ToArray());
+            }
         }
 
         public AggregateException Exception { get; private set; }
@@ -199,18 +210,19 @@ namespace System.Threading.Tasks
             if (tasks.Length == 0) return CompletedTask;
 
             var tcs = new TaskCompletionSource<object>();
-            var exceptions = new List<Exception>();
+            var exceptions = new AggregateException[tasks.Length];
             int count = 0;
 
-            for (int i = 0; i < tasks.Length; i++)
+            for (int j = 0; j < tasks.Length; j++)
             {
-                var t = tasks[i];
+                var index = j;
+                var t = tasks[index];
 
                 if (t.IsCompleted)
                 {
                     if (t.IsFaulted)
                         lock (exceptions)
-                        exceptions.Add(t.Exception);
+                        exceptions[index] = t.Exception;
 
                     CheckWhenAllCompletetion(tasks, tcs, null, exceptions, ref count);
                 }
@@ -220,7 +232,7 @@ namespace System.Threading.Tasks
                     {
                         if (t.IsFaulted)
                             lock (exceptions)
-                                exceptions.Add(t.Exception);
+                                exceptions[index] = t.Exception;
 
                         CheckWhenAllCompletetion(tasks, tcs, null, exceptions, ref count);
                     });
@@ -230,16 +242,20 @@ namespace System.Threading.Tasks
             return tcs.Task;
         }
 
-        private static void CheckWhenAllCompletetion<TResult>(Task[] tasks, TaskCompletionSource<TResult> tcs, TResult result, List<Exception> exceptions, ref int count)
+        private static void CheckWhenAllCompletetion<TResult>(Task[] tasks, TaskCompletionSource<TResult> tcs, TResult result, AggregateException[] exceptions, ref int count)
         {
             Interlocked.Increment(ref count);
             if (count == tasks.Length)
             {
                 bool any;
+                Exception[] innerExceptions;
                 lock (exceptions)
-                    any = exceptions.Any();
+                {
+                    innerExceptions = exceptions.Where(x => x != null).SelectMany(x => x.InnerExceptions).ToArray();
+                    any = innerExceptions.Any();
+                }
                 if (any)
-                    tcs.TrySetException(new AggregateException(exceptions.ToArray()));
+                    tcs.TrySetException(new AggregateException(innerExceptions));
                 else if (tasks.Any(x => x.IsCanceled))
                     tcs.TrySetCanceled();
                 else
@@ -255,22 +271,22 @@ namespace System.Threading.Tasks
             if (tasks.Length == 0) return FromResult(new TResult[0]);
 
             var tcs = new TaskCompletionSource<TResult[]>();
-            var exceptions = new List<Exception>();
+            var exceptions = new AggregateException[tasks.Length];
             var results = new TResult[tasks.Length];
             int count = 0;
 
             for (var j = 0; j < tasks.Length; j++)
             {
-                var i = j;
-                var t = tasks[i];
+                var index = j;
+                var t = tasks[index];
 
                 if (t.IsCompleted)
                 {
                     if (t.IsFaulted)
                         lock (exceptions)
-                            exceptions.Add(t.Exception);
+                            exceptions[index] = t.Exception;
                     else if (!t.IsCanceled)
-                        results[i] = t.Result;
+                        results[index] = t.Result;
 
                     CheckWhenAllCompletetion(tasks, tcs, results, exceptions, ref count);
                 }
@@ -280,9 +296,9 @@ namespace System.Threading.Tasks
                     {
                         if (t.IsFaulted)
                             lock (exceptions)
-                                exceptions.Add(t.Exception);
+                                exceptions[index] = t.Exception;
                         else if (!t.IsCanceled)
-                            results[i] = t.Result;
+                            results[index] = t.Result;
 
                         CheckWhenAllCompletetion(tasks, tcs, results, exceptions, ref count);
                     });
