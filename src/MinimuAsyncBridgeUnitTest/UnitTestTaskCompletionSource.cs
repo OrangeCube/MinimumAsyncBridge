@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Linq;
 
 namespace MinimuAsyncBridgeUnitTest
 {
@@ -19,7 +20,7 @@ namespace MinimuAsyncBridgeUnitTest
         private void GetResultShouldHaveExceptionIfTheTasksGetError()
         {
             var tcs = new TaskCompletionSource<int>();
-            var ex = new Exception();
+            var ex = new Exception("ex1");
             tcs.SetException(ex);
             var exceptionCount = 0;
 
@@ -27,10 +28,10 @@ namespace MinimuAsyncBridgeUnitTest
             {
                 var res = tcs.Task.Result;
             }
-            catch (Exception e)
+            catch (AggregateException e)
             {
-                // todo AggregateException
-                Assert.AreEqual(e, ex);
+                Assert.AreEqual(e.InnerExceptions.Count, 1);
+                Assert.AreEqual(e.InnerExceptions.First(), ex);
                 exceptionCount++;
             }
             Assert.AreEqual(exceptionCount, 1);
@@ -46,10 +47,10 @@ namespace MinimuAsyncBridgeUnitTest
             {
                 var res = tcs.Task.Result;
             }
-            catch (Exception e)
+            catch (AggregateException e)
             {
-                // todo AggregateException
-                Assert.AreEqual(e.GetType(), typeof(TaskCanceledException));
+                Assert.AreEqual(e.InnerExceptions.Count, 1);
+                Assert.AreEqual(e.InnerExceptions.First().GetType(), typeof(TaskCanceledException));
                 exceptionCount++;
             }
             Assert.AreEqual(exceptionCount, 1);
@@ -222,23 +223,19 @@ namespace MinimuAsyncBridgeUnitTest
         private async Task TrySetResultShouldWorkIfFirstTime()
         {
             var tcs = new TaskCompletionSource<int>();
-            var completedCount = 0;
-            tcs.Task.ContinueWith(t => completedCount++);
             tcs.TrySetResult(1);
             tcs.TrySetResult(2);
             tcs.TrySetCanceled();
             tcs.TrySetException(new Exception());
 
             var res = await tcs.Task.ConfigureAwait(true);
-            Assert.AreEqual(completedCount, 1);
+            Assert.AreEqual(tcs.Task.Status, TaskStatus.RanToCompletion);
             Assert.AreEqual(res, 1);
         }
 
         private async Task TrySetCanceledShouldWorkIfFirstTime()
         {
             var tcs = new TaskCompletionSource<int>();
-            var completedCount = 0;
-            tcs.Task.ContinueWith(t => completedCount++);
             tcs.TrySetCanceled();
             tcs.TrySetCanceled();
             tcs.TrySetResult(1);
@@ -255,7 +252,6 @@ namespace MinimuAsyncBridgeUnitTest
                 exceptionCount++;
             }
 
-            Assert.AreEqual(completedCount, 1);
             Assert.AreEqual(exceptionCount, 1);
             Assert.AreEqual(tcs.Task.Status, TaskStatus.Canceled);
         }
@@ -263,8 +259,6 @@ namespace MinimuAsyncBridgeUnitTest
         private async Task TrySetExceptionShouldWorkIfFirstTime()
         {
             var tcs = new TaskCompletionSource<int>();
-            var completedCount = 0;
-            tcs.Task.ContinueWith(t => completedCount++);
             tcs.TrySetException(new Exception("first"));
             tcs.TrySetException(new Exception("second"));
             tcs.TrySetResult(1);
@@ -281,7 +275,6 @@ namespace MinimuAsyncBridgeUnitTest
                 exceptionCount++;
             }
 
-            Assert.AreEqual(completedCount, 1);
             Assert.AreEqual(exceptionCount, 1);
             Assert.AreEqual(tcs.Task.Status, TaskStatus.Faulted);
         }

@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Linq;
 
 namespace MinimuAsyncBridgeUnitTest
 {
@@ -44,9 +45,10 @@ namespace MinimuAsyncBridgeUnitTest
             {
                 var result = r.Result;
             }
-            catch(Exception e)
+            catch(AggregateException e)
             {
-                Assert.AreEqual(e.GetType(), typeof(TaskCanceledException));
+                Assert.AreEqual(1, e.InnerExceptions.Count);
+                Assert.AreEqual(typeof(TaskCanceledException), e.InnerExceptions.First().GetType());
                 exceptionCount++;
             }
             Assert.AreEqual(exceptionCount, 1);
@@ -79,9 +81,10 @@ namespace MinimuAsyncBridgeUnitTest
             {
                 var result = r.Result;
             }
-            catch (Exception e)
+            catch (AggregateException e)
             {
-                Assert.AreEqual(e, ex);
+                Assert.AreEqual(1, e.InnerExceptions.Count);
+                Assert.AreEqual(ex, e.InnerExceptions.First());
                 exceptionCount++;
             }
             Assert.AreEqual(exceptionCount, 1);
@@ -97,7 +100,8 @@ namespace MinimuAsyncBridgeUnitTest
             var r = await Task.WhenAny(tcs.Task, t2);
 
             Assert.AreSame(r, tcs.Task);
-            Assert.AreSame(r.Exception, plannedException);
+            Assert.AreSame(r.Exception.InnerException, plannedException);
+            Assert.AreEqual(1, r.Exception.InnerExceptions.Count);
         }
 
         private async Task WhenAnyDelaysShouldAwaitForMinDelayWithTResult()

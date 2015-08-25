@@ -134,7 +134,7 @@ namespace MinimuAsyncBridgeUnitTest
             Task<object[]> t = null;
             try
             {
-                t = Task.WhenAll<object>(t1, t2);
+                t = Task.WhenAll(t1, t2);
                 var res = await t;
             }
             catch (Exception e)
@@ -147,9 +147,10 @@ namespace MinimuAsyncBridgeUnitTest
             {
                 var res = t.Result;
             }
-            catch (Exception e)
+            catch (AggregateException e)
             {
-                Assert.AreEqual(e.GetType(), typeof(TaskCanceledException));
+                Assert.AreEqual(1, e.InnerExceptions.Count);
+                Assert.AreEqual(typeof(TaskCanceledException), e.InnerException.GetType());
                 exceptionCount++;
             }
 
@@ -192,7 +193,7 @@ namespace MinimuAsyncBridgeUnitTest
             Task<object[]> t = null;
             try
             {
-                t = Task.WhenAll<object>(t1, t2);
+                t = Task.WhenAll(t1, t2);
                 var res = await t;
             }
             catch (Exception e)
@@ -205,9 +206,10 @@ namespace MinimuAsyncBridgeUnitTest
             {
                 var res = t.Result;
             }
-            catch (Exception e)
+            catch (AggregateException e)
             {
-                Assert.AreEqual(e.GetType(), typeof(TaskCanceledException));
+                Assert.AreEqual(1, e.InnerExceptions.Count);
+                Assert.AreEqual(typeof(TaskCanceledException), e.InnerException.GetType());
                 exceptionCount++;
             }
 
@@ -232,10 +234,10 @@ namespace MinimuAsyncBridgeUnitTest
             var tcs2 = new TaskCompletionSource<int>();
             tcs2.TrySetResult(2);
             var tcs3 = new TaskCompletionSource<int>();
-            var ex1 = new Exception();
+            var ex1 = new Exception("ex1");
             tcs3.TrySetException(ex1);
             var tcs4 = new TaskCompletionSource<int>();
-            var ex2 = new Exception();
+            var ex2 = new Exception("ex2");
             tcs4.TrySetException(ex2);
             var t1 = tcs1.Task;
             var t2 = tcs2.Task;
@@ -243,19 +245,22 @@ namespace MinimuAsyncBridgeUnitTest
             var t4 = tcs4.Task;
 
             var exceptionCount = 0;
+            Task t = Task.WhenAll(t1, t2, t3, t4);
             try
             {
-                await Task.WhenAll(t1, t2, t3, t4);
+                await t;
             }
-            catch (AggregateException e)
+            catch (Exception e)
             {
-                Assert.AreEqual(e.InnerExceptions.Count, 2);
-                Assert.AreEqual(e.InnerExceptions[0], ex1);
-                Assert.AreEqual(e.InnerExceptions[1], ex2);
+                Assert.AreEqual(ex1, e);
                 exceptionCount++;
             }
 
             Assert.AreEqual(exceptionCount, 1);
+            Assert.AreEqual(t.Status, TaskStatus.Faulted);
+            Assert.AreEqual(2, t.Exception.InnerExceptions.Count);
+            Assert.AreEqual(t.Exception.InnerExceptions[0], ex1);
+            Assert.AreEqual(t.Exception.InnerExceptions[1], ex2);
         }
 
         private async Task WhenAllShouldHasExceptionsIfAnyOfTheTaskGetExceptionWithTResult()
@@ -265,10 +270,10 @@ namespace MinimuAsyncBridgeUnitTest
             var tcs2 = new TaskCompletionSource<object>();
             tcs2.TrySetResult(null);
             var tcs3 = new TaskCompletionSource<object>();
-            var ex1 = new Exception();
+            var ex1 = new Exception("ex1");
             tcs3.TrySetException(ex1);
             var tcs4 = new TaskCompletionSource<object>();
-            var ex2 = new Exception();
+            var ex2 = new Exception("ex2");
             tcs4.TrySetException(ex2);
             var t1 = tcs1.Task;
             var t2 = tcs2.Task;
@@ -279,14 +284,12 @@ namespace MinimuAsyncBridgeUnitTest
             Task<object[]> t = null;
             try
             {
-                t = Task.WhenAll<object>(t1, t2, t3, t4);
+                t = Task.WhenAll(t1, t2, t3, t4);
                 var res = await t;
             }
-            catch (AggregateException e)
+            catch (Exception e)
             {
-                Assert.AreEqual(e.InnerExceptions.Count, 2);
-                Assert.AreEqual(e.InnerExceptions[0], ex1);
-                Assert.AreEqual(e.InnerExceptions[1], ex2);
+                Assert.AreEqual(ex1, e);
                 exceptionCount++;
             }
 
@@ -303,6 +306,9 @@ namespace MinimuAsyncBridgeUnitTest
             }
 
             Assert.AreEqual(exceptionCount, 2);
+            Assert.AreEqual(t.Status, TaskStatus.Faulted);
+            Assert.AreEqual(t.Exception.InnerExceptions[0], ex1);
+            Assert.AreEqual(t.Exception.InnerExceptions[1], ex2);
         }
 
         private async Task WhenAllShouldHasExceptionsIfAnyOfTheTaskGetExceptionAsync()
@@ -312,30 +318,33 @@ namespace MinimuAsyncBridgeUnitTest
             var tcs2 = new TaskCompletionSource<int>();
             Task.Delay(200).ContinueWith(_ => tcs2.TrySetResult(2));
             var tcs3 = new TaskCompletionSource<int>();
-            var ex1 = new Exception();
-            Task.Delay(300).ContinueWith(_ => tcs3.TrySetException(ex1));
+            var ex1 = new Exception("ex1");
+            Task.Delay(400).ContinueWith(_ => tcs3.TrySetException(ex1));
             var tcs4 = new TaskCompletionSource<int>();
-            var ex2 = new Exception();
-            Task.Delay(400).ContinueWith(_ => tcs4.TrySetException(ex2));
+            var ex2 = new Exception("ex2");
+            Task.Delay(300).ContinueWith(_ => tcs4.TrySetException(ex2));
             var t1 = tcs1.Task;
             var t2 = tcs2.Task;
             var t3 = tcs3.Task;
             var t4 = tcs4.Task;
 
             var exceptionCount = 0;
+            Task t = Task.WhenAll(t1, t2, t3, t4);
             try
             {
-                await Task.WhenAll(t1, t2, t3, t4);
+                await t;
             }
-            catch (AggregateException e)
+            catch (Exception e)
             {
-                Assert.AreEqual(e.InnerExceptions.Count, 2);
-                Assert.AreEqual(e.InnerExceptions[0], ex1);
-                Assert.AreEqual(e.InnerExceptions[1], ex2);
+                Assert.AreEqual(ex1, e);
                 exceptionCount++;
             }
 
             Assert.AreEqual(exceptionCount, 1);
+            Assert.AreEqual(t.Status, TaskStatus.Faulted);
+            Assert.AreEqual(2, t.Exception.InnerExceptions.Count);
+            Assert.AreEqual(t.Exception.InnerExceptions[0], ex1);
+            Assert.AreEqual(t.Exception.InnerExceptions[1], ex2);
         }
 
         private async Task WhenAllShouldHasExceptionsIfAnyOfTheTaskGetExceptionWithTResultAsync()
@@ -345,10 +354,10 @@ namespace MinimuAsyncBridgeUnitTest
             var tcs2 = new TaskCompletionSource<object>();
             tcs2.TrySetResult(null);
             var tcs3 = new TaskCompletionSource<object>();
-            var ex1 = new Exception();
+            var ex1 = new Exception("ex1");
             Task.Delay(300).ContinueWith(_ => tcs3.TrySetException(ex1));
             var tcs4 = new TaskCompletionSource<object>();
-            var ex2 = new Exception();
+            var ex2 = new Exception("ex2");
             Task.Delay(400).ContinueWith(_ => tcs4.TrySetException(ex2));
             var t1 = tcs1.Task;
             var t2 = tcs2.Task;
@@ -362,11 +371,9 @@ namespace MinimuAsyncBridgeUnitTest
                 t = Task.WhenAll<object>(t1, t2, t3, t4);
                 var res = await t;
             }
-            catch (AggregateException e)
+            catch (Exception e)
             {
-                Assert.AreEqual(e.InnerExceptions.Count, 2);
-                Assert.AreEqual(e.InnerExceptions[0], ex1);
-                Assert.AreEqual(e.InnerExceptions[1], ex2);
+                Assert.AreEqual(ex1, e);
                 exceptionCount++;
             }
 
@@ -383,6 +390,77 @@ namespace MinimuAsyncBridgeUnitTest
             }
 
             Assert.AreEqual(exceptionCount, 2);
+            Assert.AreEqual(t.Status, TaskStatus.Faulted);
+            Assert.AreEqual(t.Exception.InnerExceptions[0], ex1);
+            Assert.AreEqual(t.Exception.InnerExceptions[1], ex2);
+        }
+        #endregion
+
+        #region nest
+        [TestMethod]
+        public void TestNestedWhenAll()
+        {
+            TestNestedWhenAllAsync().Wait();
+        }
+
+        private async Task TestNestedWhenAllAsync()
+        {
+            var tcs1 = new TaskCompletionSource<object>();
+            tcs1.TrySetCanceled();
+            var tcs2 = new TaskCompletionSource<int>();
+            tcs2.TrySetResult(2);
+            var tcs3 = new TaskCompletionSource<int>();
+            var ex1 = new Exception("ex1");
+            tcs3.TrySetException(ex1);
+            var tcs4 = new TaskCompletionSource<int>();
+            var ex2 = new Exception("ex2");
+            tcs4.TrySetException(ex2);
+            var t1 = tcs1.Task;
+            var t2 = tcs2.Task;
+            var t3 = tcs3.Task;
+            var t4 = tcs4.Task;
+
+            var tcs5 = new TaskCompletionSource<object>();
+            tcs5.TrySetCanceled();
+            var tcs6 = new TaskCompletionSource<int>();
+            tcs6.TrySetResult(2);
+            var tcs7 = new TaskCompletionSource<int>();
+            var ex3 = new Exception("ex3");
+            tcs7.TrySetException(ex3);
+            var tcs8 = new TaskCompletionSource<int>();
+            var ex4 = new Exception("ex4");
+            tcs8.TrySetException(ex4);
+            var t5 = tcs5.Task;
+            var t6 = tcs6.Task;
+            var t7 = tcs7.Task;
+            var t8 = tcs8.Task;
+
+            var exceptionCount = 0;
+            Task all1 = Task.WhenAll(t1, t2, t3, t4);
+            Task all2 = Task.WhenAll(t5, t6, t7, t8, all1);
+            try
+            {
+                await all2;
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(ex3, e);
+                exceptionCount++;
+            }
+
+            Assert.AreEqual(exceptionCount, 1);
+
+            Assert.AreEqual(all1.Status, TaskStatus.Faulted);
+            Assert.AreEqual(2, all1.Exception.InnerExceptions.Count);
+            Assert.AreEqual(all1.Exception.InnerExceptions[0], ex1);
+            Assert.AreEqual(all1.Exception.InnerExceptions[1], ex2);
+
+            Assert.AreEqual(all2.Status, TaskStatus.Faulted);
+            Assert.AreEqual(4, all2.Exception.InnerExceptions.Count);
+            Assert.AreEqual(all2.Exception.InnerExceptions[0], ex3);
+            Assert.AreEqual(all2.Exception.InnerExceptions[1], ex4);
+            Assert.AreEqual(all2.Exception.InnerExceptions[2], ex1);
+            Assert.AreEqual(all2.Exception.InnerExceptions[3], ex2);
         }
         #endregion
     }
