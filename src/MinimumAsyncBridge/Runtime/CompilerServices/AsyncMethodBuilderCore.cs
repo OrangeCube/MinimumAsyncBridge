@@ -116,7 +116,15 @@ namespace System.Runtime.CompilerServices
                         }
                         else
                         {
-                            ExecutionContext.Run(_context, x => action(x), _stateMachine);
+                            var sync = SynchronizationContext.Current;
+                            ExecutionContext.Run(_context,
+                                x =>
+                                {
+                                    if (sync == null)
+                                        action(x);
+                                    else
+                                        sync.Post(y => action(y), x);
+                                }, _stateMachine);
                         }
 
                         return;
