@@ -79,5 +79,44 @@ namespace MinimuAsyncBridgeUnitTest
 
             Assert.IsTrue(cancelCount == 1);
         }
+
+        [TestMethod]
+        public void TestContinueWith()
+        {
+            ContinueWithShouldHasExceptionIfContinuationActionGetException().Wait();
+            ContinueWithShouldHasExceptionIfContinuationActionGetExceptionWithResult().Wait();
+        }
+
+        private async Task ContinueWithShouldHasExceptionIfContinuationActionGetException()
+        {
+            var exceptionCount = 0;
+            var ex = new Exception("ex1");
+            try
+            {
+                await Task.Delay(1).ContinueWith(_ => { throw ex; });
+            }
+            catch(Exception e)
+            {
+                Assert.AreSame(ex, e);
+                exceptionCount++;
+            }
+            Assert.AreEqual(1, exceptionCount);
+        }
+
+        private async Task ContinueWithShouldHasExceptionIfContinuationActionGetExceptionWithResult()
+        {
+            var exceptionCount = 0;
+            var ex = new Exception("ex1");
+            try
+            {
+                await Task.Delay(1).ContinueWith(_ => 1).ContinueWith(_ => { throw ex; });
+            }
+            catch (Exception e)
+            {
+                Assert.AreSame(ex, e);
+                exceptionCount++;
+            }
+            Assert.AreEqual(1, exceptionCount);
+        }
     }
 }

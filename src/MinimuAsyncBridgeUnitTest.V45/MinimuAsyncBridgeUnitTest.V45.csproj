@@ -56,8 +56,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\MinimuAsyncBridgeUnitTest\SingleThreadSynchronizationContext.cs">
+      <Link>SingleThreadSynchronizationContext.cs</Link>
+    </Compile>
     <Compile Include="..\MinimuAsyncBridgeUnitTest\UnitTestCore.cs">
       <Link>UnitTestCore.cs</Link>
+    </Compile>
+    <Compile Include="..\MinimuAsyncBridgeUnitTest\UnitTestSychronizationContext.cs">
+      <Link>UnitTestSychronizationContext.cs</Link>
     </Compile>
     <Compile Include="..\MinimuAsyncBridgeUnitTest\UnitTestTaskCompletionSource.cs">
       <Link>UnitTestTaskCompletionSource.cs</Link>
