@@ -313,8 +313,15 @@ namespace System.Threading.Tasks
             var tcs = new TaskCompletionSource<object>();
             OnCompleted(() =>
             {
-                continuationAction(this);
-                tcs.TrySetResult(null);
+                try
+                {
+                    continuationAction(this);
+                    tcs.TrySetResult(null);
+                }
+                catch(Exception ex)
+                {
+                    tcs.TrySetException(ex);
+                }
             });
             return tcs.Task;
         }
@@ -324,8 +331,15 @@ namespace System.Threading.Tasks
             var tcs = new TaskCompletionSource<TResult>();
             OnCompleted(() =>
             {
-                var r = continuationFunction(this);
-                tcs.TrySetResult(r);
+                try
+                {
+                    var r = continuationFunction(this);
+                    tcs.TrySetResult(r);
+                }
+                catch(Exception ex)
+                {
+                    tcs.TrySetException(ex);
+                }
             });
             return tcs.Task;
         }
