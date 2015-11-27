@@ -34,19 +34,42 @@ namespace MinimuAsyncBridgeUnitTest
 
         private async Task TaskDelayCanCancelAsync()
         {
-            var cts1 = new CancellationTokenSource();
-            var d1 = Task.Delay(1000, cts1.Token);
-            cts1.Cancel();
-            Assert.AreEqual(d1.Status, TaskStatus.Canceled);
+            var delays = new[] { 1000, 100, 10, 1 };
 
-            var cts2 = new CancellationTokenSource();
-            var d2 = Task.Delay(1000, cts2.Token);
+            // cancel immediately
+            foreach (var delay in delays)
+            {
+                var cts = new CancellationTokenSource();
+                var d = Task.Delay(delay, cts.Token);
+                cts.Cancel();
+                Assert.AreEqual(TaskStatus.Canceled, d.Status);
+            }
 
-            await Task.Delay(10);
+            var longerDelays = new[] { 1000, 100 };
 
-            cts2.Cancel();
+            foreach (var delay in longerDelays)
+            {
+                var cts = new CancellationTokenSource();
+                var d = Task.Delay(delay, cts.Token);
 
-            Assert.AreEqual(d2.Status, TaskStatus.Canceled);
+                await Task.Delay(10);
+
+                cts.Cancel();
+                Assert.AreEqual(TaskStatus.Canceled, d.Status);
+            }
+
+            var shorterDelays = new[] { 5, 1 };
+
+            foreach (var delay in shorterDelays)
+            {
+                var cts = new CancellationTokenSource();
+                var d = Task.Delay(delay, cts.Token);
+
+                await Task.Delay(100);
+
+                cts.Cancel();
+                Assert.AreEqual(TaskStatus.RanToCompletion, d.Status);
+            }
         }
 
 

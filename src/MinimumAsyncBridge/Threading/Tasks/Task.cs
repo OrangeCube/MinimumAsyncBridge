@@ -365,7 +365,8 @@ namespace System.Threading.Tasks
             }
 
             Timer t = null;
-            t = new Timer(_ =>
+
+            Action<bool> stop = (canceled) =>
             {
                 bool done = false;
                 TaskCompletionSource<bool> tcs1;
@@ -380,30 +381,18 @@ namespace System.Threading.Tasks
                 if (!done)
                 {
                     t.Dispose();
-                    tcs1.TrySetResult(false);
+                    if (canceled) tcs1.TrySetCanceled();
+                    else tcs.TrySetResult(false);
                 }
-            }, null, millisecondsDelay, Timeout.Infinite);
+            };
+
+            t = new Timer(_ => stop(false), null, Timeout.Infinite, Timeout.Infinite);
+
+            t.Change(millisecondsDelay, Timeout.Infinite);
 
             if (cancellationToken != CancellationToken.None)
             {
-                cancellationToken.Register(() =>
-                {
-                    bool done = false;
-                    TaskCompletionSource<bool> tcs1;
-
-                    lock (t)
-                    {
-                        done = tcs == null;
-                        tcs1 = tcs;
-                        tcs = null;
-                    }
-
-                    if (!done)
-                    {
-                        t.Dispose();
-                        tcs1.TrySetCanceled();
-                    }
-                });
+                cancellationToken.Register(() => stop(true));
             }
 
             return tcs.Task;
