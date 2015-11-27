@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CallerInfoAttributes.cs" />
     <Compile Include="INotifyCollectionChanged.cs" />
     <Compile Include="NotifyCollectionChangedEventArgs.cs" />
     <Compile Include="ObservableCollection.cs" />

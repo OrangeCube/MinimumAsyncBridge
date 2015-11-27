@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>MvvmBridge</id>
-    <version>1.0.1.0</version>
+    <version>1.1.0.0</version>
     <title>MvvmBridge</title>
     <authors>Nobuyuki Iwanaga</authors>
     <owners>Nobuyuki Iwanaga</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/OrangeCube/MinimumAsyncBridge</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Miminum set of the MVVM portability libarary.</description>
-    <releaseNotes>Initial release. ObservableCollection, INotifyCollectionChanged</releaseNotes>
+    <releaseNotes>Add caller member info attributes</releaseNotes>
     <copyright>Nobuyuki Iwanaga</copyright>
     <tags>ObservableCollection, INotifyCollectionChanged</tags>
     <frameworkAssemblies>
