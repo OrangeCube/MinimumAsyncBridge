@@ -382,7 +382,7 @@ namespace System.Threading.Tasks
                 {
                     t.Dispose();
                     if (canceled) tcs1.TrySetCanceled();
-                    else tcs.TrySetResult(false);
+                    else tcs1.TrySetResult(false);
                 }
             };
 
