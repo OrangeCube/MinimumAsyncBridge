@@ -397,5 +397,45 @@ namespace System.Threading.Tasks
 
             return tcs.Task;
         }
+
+        public static Task Run(Action action)
+        {
+            var tcs0 = new TaskCompletionSource<bool>();
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                var tcs = (TaskCompletionSource<bool>)x;
+                try
+                {
+                    action();
+                    tcs.TrySetResult(false);
+                }
+                catch (Exception ex)
+                {
+                    tcs.TrySetException(ex);
+                }
+            }, tcs0);
+
+            return tcs0.Task;
+        }
+
+        public static Task<TResult> Run<TResult>(Func<TResult> function)
+        {
+            var tcs0 = new TaskCompletionSource<TResult>();
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                var tcs = (TaskCompletionSource<TResult>)x;
+                try
+                {
+                    var result = function();
+                    tcs.TrySetResult(result);
+                }
+                catch (Exception ex)
+                {
+                    tcs.TrySetException(ex);
+                }
+            }, tcs0);
+
+            return tcs0.Task;
+        }
     }
 }
