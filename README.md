@@ -42,8 +42,8 @@ The `Task` class in .NET has multiple roles:
 1. future/promise: `TaskCompletionSource`
 
 ThE back-porting libararies implement only 2. and 3. (Minimum requirement of async/await is 3.). 
-For 1., only a few overloads of `Task.Run` and `WhenAny` and `WhenAll` are implemented (but, it's simplified implementation).
-If you would need the threading capability, you could use another threading library and interop by using `TaskCompletionSource`.
+For 1., only a few overloads of `Task.Run`, `WhenAny` and `WhenAll` are implemented (but, it's simplified implementation).
+If you would need the full threading capability, you could use another threading library and interop by using `TaskCompletionSource`.
 
 ## Known problem
 
