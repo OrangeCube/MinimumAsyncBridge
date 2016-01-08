@@ -61,6 +61,7 @@
     <Compile Include="Runtime\CompilerServices\INotifyCompletion.cs" />
     <Compile Include="Runtime\CompilerServices\IteratorStateMachineAttribute.cs" />
     <Compile Include="Runtime\CompilerServices\StateMachineAttribute.cs" />
+    <Compile Include="Threading\SemaphoreSlim.cs" />
     <Compile Include="Threading\Tasks\Task`1.cs" />
     <Compile Include="Threading\Tasks\Task.cs" />
     <Compile Include="Threading\Tasks\TaskCanceledException.cs" />
