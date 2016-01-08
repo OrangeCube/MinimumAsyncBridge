@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 [assembly: TypeForwardedTo(typeof(AggregateException))]
@@ -25,3 +26,5 @@ using System.Threading.Tasks;
 
 [assembly: TypeForwardedTo(typeof(ConfiguredTaskAwaitable))]
 [assembly: TypeForwardedTo(typeof(ConfiguredTaskAwaitable<>))]
+
+[assembly: TypeForwardedTo(typeof(SemaphoreSlim))]
