@@ -359,10 +359,14 @@ namespace System.Threading.Tasks
                 return task;
             }
 
-            if (millisecondsDelay <= 0)
+            if (millisecondsDelay == 0)
             {
                 tcs.SetResult(false);
                 return task;
+            }
+            if(millisecondsDelay < 0)
+            {
+                throw new ArgumentOutOfRangeException("The millisecondsDelay argument is must be 0 or greater.");
             }
 
             Timer t = null;
