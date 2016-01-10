@@ -351,17 +351,22 @@ namespace System.Threading.Tasks
         public static Task Delay(int millisecondsDelay, CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<bool>();
+            var task = tcs.Task;
 
             if (cancellationToken.IsCancellationRequested)
             {
                 tcs.SetCanceled();
-                return tcs.Task;
+                return task;
             }
 
-            if (millisecondsDelay <= 0)
+            if (millisecondsDelay == 0)
             {
                 tcs.SetResult(false);
-                return tcs.Task;
+                return task;
+            }
+            if(millisecondsDelay < 0)
+            {
+                throw new ArgumentOutOfRangeException("The millisecondsDelay argument is must be 0 or greater.");
             }
 
             Timer t = null;
@@ -395,7 +400,7 @@ namespace System.Threading.Tasks
                 cancellationToken.Register(() => stop(true));
             }
 
-            return tcs.Task;
+            return task;
         }
 
         public static Task Run(Action action)

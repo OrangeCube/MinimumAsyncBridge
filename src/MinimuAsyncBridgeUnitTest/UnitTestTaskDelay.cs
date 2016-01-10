@@ -98,5 +98,40 @@ namespace MinimuAsyncBridgeUnitTest
             }
             Assert.AreEqual(exceptionCount, 1);
         }
+
+        [TestMethod]
+        public void TaskDelayWithNegativeDelay()
+        {
+            TaskDelayWithNegativeDelayAsync().Wait();
+        }
+
+        private async Task TaskDelayWithNegativeDelayAsync()
+        {
+#if V35     // this test is .Net 3.5 only
+            await TaskDelayWithNegativeDelayAsyncInternal(-1);
+#endif
+
+            await TaskDelayWithNegativeDelayAsyncInternal(-2);
+
+            var d3 = Task.Delay(0);
+            await d3;
+            Assert.AreEqual(d3.Status, TaskStatus.RanToCompletion);
+        }
+
+        private static async Task TaskDelayWithNegativeDelayAsyncInternal(int millisecondsDelay)
+        {
+            var exceptionCount = 0;
+            try
+            {
+                var d2 = Task.Delay(millisecondsDelay);
+                await d2;
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual(ex.GetType(), typeof(ArgumentOutOfRangeException));
+                exceptionCount++;
+            }
+            Assert.AreEqual(exceptionCount, 1);
+        }
     }
 }
