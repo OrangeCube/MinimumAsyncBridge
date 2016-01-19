@@ -133,5 +133,28 @@ namespace MinimuAsyncBridgeUnitTest
             }
             Assert.AreEqual(exceptionCount, 1);
         }
+
+        [TestMethod]
+        public void TestDelayWithOverflownDelayTime()
+        {
+            TestDelayWithOverflownDelayTimeAsync().Wait();
+        }
+
+        private async Task TestDelayWithOverflownDelayTimeAsync()
+        {
+            try
+            {
+                var delay = TimeSpan.FromSeconds(int.MaxValue + 5L);
+                var d2 = Task.Delay(delay);
+                await d2;
+
+                Assert.Fail();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return;
+            }
+            Assert.Fail();
+        }
     }
 }

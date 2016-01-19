@@ -10,6 +10,41 @@ namespace MinimuAsyncBridgeUnitTest
     public class UnitTestSemaphoreSlim
     {
         [TestMethod]
+        public void TestCancelWaitAsync()
+        {
+            TestCancelWaitAsyncInternal().Wait();
+        }
+
+        private async Task TestCancelWaitAsyncInternal()
+        {
+            var r = new Random();
+            var s = new SemaphoreSlim(1);
+
+            await Task.WhenAll(Enumerable.Range(0, 100).Select(async i =>
+            {
+                var ct = CancellationToken.None;
+                if((i % 5) == 0)
+                {
+                    var cts = new CancellationTokenSource();
+                    var t = Task.Delay(1).ContinueWith(_ => cts.Cancel());
+                    ct = cts.Token;
+                }
+
+                try
+                {
+                    await s.WaitAsync(ct);
+                    await Delay(r, ct).ConfigureAwait(false);
+                }
+                catch (TestException) { }
+                catch (OperationCanceledException) { }
+                finally
+                {
+                    s.Release();
+                }
+            }));
+        }
+
+        [TestMethod]
         public void TestWaitAsync()
         {
             TestWaitAsyncInternal().Wait();
@@ -65,7 +100,7 @@ namespace MinimuAsyncBridgeUnitTest
                     localCount = count.Value;
                     await Delay(r).ConfigureAwait(false);
                 }
-                catch { }
+                catch (TestException) { }
                 finally
                 {
                     count.Value = localCount + 1;
@@ -74,17 +109,19 @@ namespace MinimuAsyncBridgeUnitTest
             }
         }
 
-        private async Task Delay(Random random)
+        class TestException : Exception { }
+
+        private async Task Delay(Random random, CancellationToken ct = default(CancellationToken))
         {
             var selection = random.Next() % 100;
 
             if(selection < 2)
             {
-                await Task.Delay(random.Next(3)).ConfigureAwait(false);
+                await Task.Delay(random.Next(3), ct).ConfigureAwait(false);
             }
             else if(selection < 5)
             {
-                throw new Exception();
+                throw new TestException();
             }
             else if(selection < 20)
             {
@@ -95,13 +132,13 @@ namespace MinimuAsyncBridgeUnitTest
                 await Task.Run(() =>
                 {
                     var count = random.Next(10);
-                    for (var i = 0; i < count; i++) ;
+                    for (var i = 0; i < count && !ct.IsCancellationRequested; i++) ;
                 }).ConfigureAwait(false);
             }
             else
             {
                 var count = random.Next(10);
-                for (var i = 0; i < count; i++) ;
+                for (var i = 0; i < count && !ct.IsCancellationRequested; i++) ;
             }
         }
     }
