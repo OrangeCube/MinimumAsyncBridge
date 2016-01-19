@@ -344,8 +344,16 @@ namespace System.Threading.Tasks
             return tcs.Task;
         }
 
-        public static Task Delay(TimeSpan delay) => Delay((int)delay.TotalMilliseconds, CancellationToken.None);
-        public static Task Delay(TimeSpan delay, CancellationToken cancellationToken) => Delay((int)delay.TotalMilliseconds, cancellationToken);
+        private static int CheckedTotalMilliseconds(TimeSpan t)
+        {
+            var totalMilliseconds = (long)t.TotalMilliseconds;
+            if (totalMilliseconds < 0 || totalMilliseconds > int.MaxValue)
+                throw new ArgumentOutOfRangeException(t.ToString());
+            return (int)totalMilliseconds;
+        }
+
+        public static Task Delay(TimeSpan delay) => Delay(CheckedTotalMilliseconds(delay), CancellationToken.None);
+        public static Task Delay(TimeSpan delay, CancellationToken cancellationToken) => Delay(CheckedTotalMilliseconds(delay), cancellationToken);
         public static Task Delay(int millisecondsDelay) => Delay(millisecondsDelay, CancellationToken.None);
 
         public static Task Delay(int millisecondsDelay, CancellationToken cancellationToken)
@@ -366,7 +374,7 @@ namespace System.Threading.Tasks
             }
             if(millisecondsDelay < 0)
             {
-                throw new ArgumentOutOfRangeException("The millisecondsDelay argument is must be 0 or greater.");
+                throw new ArgumentOutOfRangeException("The millisecondsDelay argument is must be 0 or greater. " + millisecondsDelay);
             }
 
             Timer t = null;
