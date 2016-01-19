@@ -83,7 +83,9 @@
             }
 
             if (head != null)
-                head.TrySetResult(false);
+            {
+                Task.Run(() => head.TrySetResult(false));
+            }
 
             return count;
         }
