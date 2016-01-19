@@ -28,7 +28,9 @@
             public TaskNode Next;
         }
 
-        public Task WaitAsync()
+        public Task WaitAsync() => WaitAsync(CancellationToken.None);
+
+        public Task WaitAsync(CancellationToken cancellationToken)
         {
             lock (_lockObj)
             {
@@ -49,6 +51,10 @@
                         _tail.Next = task;
                         _tail = task;
                     }
+
+                    if (cancellationToken != CancellationToken.None)
+                        cancellationToken.Register(() => task.TrySetCanceled());
+
                     return task.Task;
                 }
             }
@@ -59,28 +65,31 @@
             TaskNode head = null;
             int count;
 
-            lock (_lockObj)
+            do
             {
-                count = _currentCount;
-
-                if (_head == null)
+                lock (_lockObj)
                 {
-                    ++_currentCount;
-                }
-                else
-                {
-                    head = _head;
+                    count = _currentCount;
 
-                    if (_head == _tail)
+                    if (_head == null)
                     {
-                        _head = _tail = null;
+                        ++_currentCount;
                     }
                     else
                     {
-                        _head = _head.Next;
+                        head = _head;
+
+                        if (_head == _tail)
+                        {
+                            _head = _tail = null;
+                        }
+                        else
+                        {
+                            _head = _head.Next;
+                        }
                     }
                 }
-            }
+            } while (head != null && head.Task.IsCompleted);
 
             if (head != null)
             {
