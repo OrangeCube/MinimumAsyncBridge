@@ -13,6 +13,7 @@ namespace MinimuAsyncBridgeUnitTest
         public void TestCancelWaitAsync()
         {
             TestCancelWaitAsyncInternal().Wait();
+            TestCancelWaitAsyncInternal2().Wait();
         }
 
         private async Task TestCancelWaitAsyncInternal()
@@ -42,6 +43,36 @@ namespace MinimuAsyncBridgeUnitTest
                     s.Release();
                 }
             }));
+        }
+
+        private async Task TestCancelWaitAsyncInternal2()
+        {
+            var s = new SemaphoreSlim(1);
+            var cts = new CancellationTokenSource();
+
+            var wait1 = WaitAsync(s, cts);
+            var wait2 = WaitWithCancellationTokenAsync(s, cts.Token);
+
+            await Task.WhenAll(wait1, wait2);
+        }
+
+        private async Task WaitAsync(SemaphoreSlim s, CancellationTokenSource cts)
+        {
+            await s.WaitAsync();
+            await Task.Delay(10);
+            cts.Cancel();
+            s.Release();
+        }
+
+        private async Task WaitWithCancellationTokenAsync(SemaphoreSlim s, CancellationToken ct)
+        {
+            await s.WaitAsync(ct);
+
+            if (ct.IsCancellationRequested)
+                return;
+
+            await Task.Delay(10);
+            s.Release();
         }
 
         [TestMethod]
