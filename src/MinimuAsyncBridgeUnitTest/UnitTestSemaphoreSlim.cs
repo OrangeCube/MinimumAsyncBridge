@@ -13,6 +13,7 @@ namespace MinimuAsyncBridgeUnitTest
         public void TestCancelWaitAsync()
         {
             TestCancelWaitAsyncInternal().Wait();
+            TestCancelWaitAsyncInternal2().Wait();
         }
 
         private async Task TestCancelWaitAsyncInternal()
@@ -23,7 +24,7 @@ namespace MinimuAsyncBridgeUnitTest
             await Task.WhenAll(Enumerable.Range(0, 100).Select(async i =>
             {
                 var ct = CancellationToken.None;
-                if((i % 5) == 0)
+                if ((i % 5) == 0)
                 {
                     var cts = new CancellationTokenSource();
                     var t = Task.Delay(1).ContinueWith(_ => cts.Cancel());
@@ -42,6 +43,50 @@ namespace MinimuAsyncBridgeUnitTest
                     s.Release();
                 }
             }));
+        }
+
+        private async Task TestCancelWaitAsyncInternal2()
+        {
+            var s = new SemaphoreSlim(1);
+            var cts = new CancellationTokenSource();
+
+            var wait1 = WaitAsync(s, cts);
+            var wait2 = WaitWithCancellationTokenAsync(s, cts.Token);
+
+            await Task.WhenAll(wait1, wait2);
+        }
+
+        private async Task WaitAsync(SemaphoreSlim s, CancellationTokenSource cts)
+        {
+            try
+            {
+                await s.WaitAsync();
+                await Task.Delay(10);
+                cts.Cancel();
+            }
+            catch (OperationCanceledException) { }
+            finally
+            {
+                s.Release();
+            }
+        }
+
+        private async Task WaitWithCancellationTokenAsync(SemaphoreSlim s, CancellationToken ct)
+        {
+            try
+            {
+                await s.WaitAsync(ct);
+
+                if (ct.IsCancellationRequested)
+                    return;
+
+                await Task.Delay(10);
+            }
+            catch (OperationCanceledException) { }
+            finally
+            {
+                s.Release();
+            }
         }
 
         [TestMethod]
@@ -115,15 +160,15 @@ namespace MinimuAsyncBridgeUnitTest
         {
             var selection = random.Next() % 100;
 
-            if(selection < 2)
+            if (selection < 2)
             {
                 await Task.Delay(random.Next(3), ct).ConfigureAwait(false);
             }
-            else if(selection < 5)
+            else if (selection < 5)
             {
                 throw new TestException();
             }
-            else if(selection < 20)
+            else if (selection < 20)
             {
                 await Task.Run(() => { }).ConfigureAwait(false);
             }

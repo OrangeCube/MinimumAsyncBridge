@@ -74,6 +74,7 @@
                     if (_head == null)
                     {
                         ++_currentCount;
+                        head = null;
                     }
                     else
                     {
