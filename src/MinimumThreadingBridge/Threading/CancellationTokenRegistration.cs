@@ -13,7 +13,8 @@
 
         public void Dispose()
         {
-            _source.Canceled -= _callback;
+            if (_source != null)
+                _source.Canceled -= _callback;
         }
         public bool Equals(CancellationTokenRegistration other) => _source == other._source && _callback == other._callback;
         public override bool Equals(object obj) => obj is CancellationTokenRegistration && Equals((CancellationTokenRegistration)obj);

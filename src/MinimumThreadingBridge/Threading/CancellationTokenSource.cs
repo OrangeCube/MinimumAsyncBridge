@@ -1,6 +1,6 @@
 ﻿namespace System.Threading
 {
-    public class CancellationTokenSource
+    public class CancellationTokenSource : IDisposable
     {
         public CancellationTokenSource()
         {
@@ -57,6 +57,11 @@
                 Cancel();
                 t = null;
             }, null, millisecondsDelay, Timeout.Infinite);
+        }
+
+        public void Dispose()
+        {
+            _canceled = null;
         }
     }
 }

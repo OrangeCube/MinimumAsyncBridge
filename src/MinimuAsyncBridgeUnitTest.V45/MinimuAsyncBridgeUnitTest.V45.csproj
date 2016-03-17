@@ -62,6 +62,9 @@
     <Compile Include="..\MinimuAsyncBridgeUnitTest\UnitTestCore.cs">
       <Link>UnitTestCore.cs</Link>
     </Compile>
+    <Compile Include="..\MinimuAsyncBridgeUnitTest\UnitTestMemoryLeak.cs">
+      <Link>UnitTestMemoryLeak.cs</Link>
+    </Compile>
     <Compile Include="..\MinimuAsyncBridgeUnitTest\UnitTestSemaphoreSlim.cs">
       <Link>UnitTestSemaphoreSlim.cs</Link>
     </Compile>
