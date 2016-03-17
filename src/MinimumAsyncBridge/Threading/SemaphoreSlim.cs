@@ -26,6 +26,7 @@
         class TaskNode : TaskCompletionSource<bool>
         {
             public TaskNode Next;
+            public CancellationTokenRegistration Cancelation;
         }
 
         public Task WaitAsync() => WaitAsync(CancellationToken.None);
@@ -53,7 +54,14 @@
                     }
 
                     if (cancellationToken != CancellationToken.None)
-                        cancellationToken.Register(() => task.TrySetCanceled());
+                    {
+                        task.Cancelation = cancellationToken.Register(() =>
+                        {
+                            task.TrySetCanceled();
+                            if (task.Cancelation != default(CancellationTokenRegistration))
+                                task.Cancelation.Dispose();
+                        });
+                    }
 
                     return task.Task;
                 }
@@ -94,6 +102,8 @@
 
             if (head != null)
             {
+                if (head.Cancelation != default(CancellationTokenRegistration))
+                    head.Cancelation.Dispose();
                 Task.Run(() => head.TrySetResult(false));
             }
 

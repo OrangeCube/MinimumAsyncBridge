@@ -79,11 +79,7 @@ namespace MinimuAsyncBridgeUnitTest
             var cts = new CancellationTokenSource();
             var t = TaskDelay(cts.Token);
             cts.Cancel();
-            try
-            {
-                t.Wait();
-            }
-            catch (OperationCanceledException) { }
+            t.Wait();
             CancellationTokenSourceShouldHaveNoEventListener(cts);
             AllReferencesShouldBeGarbageCollected();
         }
@@ -104,7 +100,11 @@ namespace MinimuAsyncBridgeUnitTest
             {
                 var t = Task.Delay(1, ct);
                 Add(t);
-                await t;
+                try
+                {
+                    await t;
+                }
+                catch (OperationCanceledException) { }
             }
         }
     }
