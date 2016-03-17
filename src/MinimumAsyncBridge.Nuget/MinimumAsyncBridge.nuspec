@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>MinimumAsyncBridge</id>
-    <version>0.9.26.2</version>
+    <version>0.9.26.3</version>
     <title>MinimumAsyncBridge</title>
     <authors>Nobuyuki Iwanaga</authors>
     <owners>Nobuyuki Iwanaga</owners>
@@ -17,7 +17,7 @@
       <frameworkAssembly assemblyName="System" targetFramework="" />
     </frameworkAssemblies>
     <dependencies>
-      <dependency id="MinimumThreadingBridge" version="0.9.8.1" />
+      <dependency id="MinimumThreadingBridge" version="0.9.8.2" />
     </dependencies>
   </metadata>
   <files>
