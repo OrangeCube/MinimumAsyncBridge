@@ -56,6 +56,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="UnitTestMemoryLeak.cs" />
     <Compile Include="UnitTestSemaphoreSlim.cs" />
     <Compile Include="UnitTestSychronizationContext.cs" />
     <Compile Include="UnitTestTaskCompletionSource.cs" />

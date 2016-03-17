@@ -360,6 +360,7 @@ namespace System.Threading.Tasks
         {
             var tcs = new TaskCompletionSource<bool>();
             var task = tcs.Task;
+            var ctr = default(CancellationTokenRegistration);
 
             if (cancellationToken.IsCancellationRequested)
             {
@@ -381,32 +382,27 @@ namespace System.Threading.Tasks
 
             Action<bool> stop = (canceled) =>
             {
-                bool done = false;
-                TaskCompletionSource<bool> tcs1;
+                var t1 = Interlocked.Exchange(ref t, null);
 
-                lock (t)
+                if (t1 != null)
                 {
-                    done = tcs == null;
-                    tcs1 = tcs;
+                    t1.Dispose();
+                    if (canceled) tcs.TrySetCanceled();
+                    else tcs.TrySetResult(false);
                     tcs = null;
-                }
-
-                if (!done)
-                {
-                    t.Dispose();
-                    if (canceled) tcs1.TrySetCanceled();
-                    else tcs1.TrySetResult(false);
+                    if (ctr != default(CancellationTokenRegistration)) ctr.Dispose();
+                    ctr = default(CancellationTokenRegistration);
                 }
             };
 
             t = new Timer(_ => stop(false), null, Timeout.Infinite, Timeout.Infinite);
 
-            t.Change(millisecondsDelay, Timeout.Infinite);
-
             if (cancellationToken != CancellationToken.None)
             {
-                cancellationToken.Register(() => stop(true));
+                ctr = cancellationToken.Register(() => stop(true));
             }
+
+            t.Change(millisecondsDelay, Timeout.Infinite);
 
             return task;
         }
