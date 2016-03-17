@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>MinimumAsyncBridge</id>
-    <version>0.9.26.1</version>
+    <version>0.9.26.3</version>
     <title>MinimumAsyncBridge</title>
     <authors>Nobuyuki Iwanaga</authors>
     <owners>Nobuyuki Iwanaga</owners>
@@ -10,14 +10,14 @@
     <projectUrl>https://github.com/OrangeCube/MinimumAsyncBridge</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Miminum set of the async/await portability libarary.</description>
-    <releaseNotes>fix memory leak in SemaphoreSlim.WaitAsync(CancellationToken)</releaseNotes>
+    <releaseNotes>resolve dependency.</releaseNotes>
     <copyright>Nobuyuki Iwanaga</copyright>
     <tags>AsyncBridge, async, await</tags>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="" />
     </frameworkAssemblies>
     <dependencies>
-      <dependency id="MinimumThreadingBridge" version="0.9.8" />
+      <dependency id="MinimumThreadingBridge" version="0.9.8.2" />
     </dependencies>
   </metadata>
   <files>
