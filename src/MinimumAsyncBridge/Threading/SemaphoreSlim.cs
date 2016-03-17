@@ -26,7 +26,7 @@
         class TaskNode : TaskCompletionSource<bool>
         {
             public TaskNode Next;
-            public CancellationTokenRegistration Cancelation;
+            public CancellationTokenRegistration Cancellation;
         }
 
         public Task WaitAsync() => WaitAsync(CancellationToken.None);
@@ -55,11 +55,11 @@
 
                     if (cancellationToken != CancellationToken.None)
                     {
-                        task.Cancelation = cancellationToken.Register(() =>
+                        task.Cancellation = cancellationToken.Register(() =>
                         {
                             task.TrySetCanceled();
-                            if (task.Cancelation != default(CancellationTokenRegistration))
-                                task.Cancelation.Dispose();
+                            if (task.Cancellation != default(CancellationTokenRegistration))
+                                task.Cancellation.Dispose();
                         });
                     }
 
@@ -102,8 +102,8 @@
 
             if (head != null)
             {
-                if (head.Cancelation != default(CancellationTokenRegistration))
-                    head.Cancelation.Dispose();
+                if (head.Cancellation != default(CancellationTokenRegistration))
+                    head.Cancellation.Dispose();
                 Task.Run(() => head.TrySetResult(false));
             }
 
