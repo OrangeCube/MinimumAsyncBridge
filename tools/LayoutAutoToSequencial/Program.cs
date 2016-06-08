@@ -71,6 +71,7 @@ namespace LayoutAutoToSequencial
             var module = ModuleDefinition.ReadModule(file);
 
             var types = GetAllTypes(module);
+            if (!types.Any()) return;
 
             foreach (var t in types)
             {
