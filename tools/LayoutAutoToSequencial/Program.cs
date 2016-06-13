@@ -71,14 +71,19 @@ namespace LayoutAutoToSequencial
             var module = ModuleDefinition.ReadModule(file);
 
             var types = GetAllTypes(module);
+            var any = false;
 
             foreach (var t in types)
             {
                 if (t.IsValueType && t.IsNestedPrivate && t.IsAutoLayout)
+                {
+                    any = true;
                     t.Attributes |= TypeAttributes.SequentialLayout;
+                }
             }
 
-            module.Write(file);
+            if (any)
+                module.Write(file);
         }
 
         /// <summary>
