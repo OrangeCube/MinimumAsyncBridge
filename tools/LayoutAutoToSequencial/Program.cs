@@ -48,7 +48,7 @@ namespace LayoutAutoToSequencial
 
             foreach (var file in Directory.GetFiles(path, "*.dll"))
             {
-                Console.WriteLine("rewrite " + file);
+                Console.WriteLine("process " + file);
                 RewriteDll(file);
             }
         }
@@ -75,15 +75,19 @@ namespace LayoutAutoToSequencial
 
             foreach (var t in types)
             {
-                if (t.IsValueType && t.IsNestedPrivate && t.IsAutoLayout)
+                if (t.IsValueType && !t.IsEnum && t.IsNestedPrivate && t.IsAutoLayout)
                 {
                     any = true;
                     t.Attributes |= TypeAttributes.SequentialLayout;
+                    Console.WriteLine("    " + t.Name);
                 }
             }
 
             if (any)
+            {
+                Console.WriteLine("overwritten");
                 module.Write(file);
+            }
         }
 
         /// <summary>
