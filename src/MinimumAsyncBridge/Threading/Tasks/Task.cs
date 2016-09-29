@@ -402,7 +402,7 @@ namespace System.Threading.Tasks
                 ctr = cancellationToken.Register(() => stop(true));
             }
 
-            t.Change(millisecondsDelay, Timeout.Infinite);
+            t?.Change(millisecondsDelay, Timeout.Infinite);
 
             return task;
         }
