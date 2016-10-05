@@ -33,6 +33,8 @@
 
         public Task WaitAsync(CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             lock (_lockObj)
             {
                 if (_currentCount > 0)
