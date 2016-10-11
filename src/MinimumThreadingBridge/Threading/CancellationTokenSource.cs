@@ -7,6 +7,16 @@
             Token = new CancellationToken(this);
         }
 
+        public CancellationTokenSource(TimeSpan delay) : this()
+        {
+            CancelAfter(delay);
+        }
+
+        public CancellationTokenSource(Int32 millisecondsDelay) : this()
+        {
+            CancelAfter(millisecondsDelay);
+        }
+
         public CancellationToken Token { get; }
 
         public bool IsCancellationRequested { get; private set; }
