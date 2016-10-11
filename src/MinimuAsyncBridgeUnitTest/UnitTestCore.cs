@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MinimuAsyncBridgeUnitTest
 {
@@ -112,7 +112,7 @@ namespace MinimuAsyncBridgeUnitTest
             {
                 await Task.Delay(1).ContinueWith(_ => { throw ex; });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Assert.AreSame(ex, e);
                 exceptionCount++;

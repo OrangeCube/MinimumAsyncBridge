@@ -38,7 +38,7 @@
             {
                 if (IsCancellationRequested)
                 {
-                    if(value != null)
+                    if (value != null)
                         value();
                 }
                 else
