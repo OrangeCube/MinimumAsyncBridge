@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MinimuAsyncBridgeUnitTest
 {
@@ -81,6 +81,23 @@ namespace MinimuAsyncBridgeUnitTest
         }
 
         [TestMethod]
+        [Ignore] // too take time
+        public void TestCancellationTokenSourceWithTimeout() => TestCancellationTokenSourceWithTimeoutAsync().Wait();
+        public async Task TestCancellationTokenSourceWithTimeoutAsync()
+        {
+            var cts = new CancellationTokenSource(1000);
+            var ct = cts.Token;
+
+            Assert.IsFalse(ct.IsCancellationRequested);
+
+            await Task.Delay(500);
+            Assert.IsFalse(ct.IsCancellationRequested);
+
+            await Task.Delay(500);
+            Assert.IsTrue(ct.IsCancellationRequested);
+        }
+
+        [TestMethod]
         public void TestContinueWith()
         {
             ContinueWithShouldHasExceptionIfContinuationActionGetException().Wait();
@@ -95,7 +112,7 @@ namespace MinimuAsyncBridgeUnitTest
             {
                 await Task.Delay(1).ContinueWith(_ => { throw ex; });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Assert.AreSame(ex, e);
                 exceptionCount++;
