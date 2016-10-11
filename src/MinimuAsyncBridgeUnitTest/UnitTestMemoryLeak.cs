@@ -24,7 +24,7 @@ namespace MinimuAsyncBridgeUnitTest
         {
             GC.Collect(2, GCCollectionMode.Forced);
 
-            lock(_refs)
+            lock (_refs)
             {
                 foreach (var r in _refs)
                     Assert.IsNull(r.Target);
@@ -35,7 +35,7 @@ namespace MinimuAsyncBridgeUnitTest
         [System.Diagnostics.Conditional("V35")]
         private static void CancellationTokenSourceShouldHaveNoEventListener(CancellationTokenSource cts)
         {
-            var f = cts.GetType().GetField("_canceled", NonPublic | Instance);
+            var f = cts.GetType().GetField("m_linkingRegistrations", NonPublic | Instance);
             var v = f.GetValue(cts);
             Assert.IsNull(v);
         }

@@ -2,6 +2,8 @@
 using System.Runtime.CompilerServices;
 using System.Threading;
 
+[assembly: TypeForwardedTo(typeof(AggregateException))]
+
 [assembly: TypeForwardedTo(typeof(IProgress<>))]
 
 [assembly: TypeForwardedTo(typeof(CancellationTokenSource))]
