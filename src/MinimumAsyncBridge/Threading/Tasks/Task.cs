@@ -30,7 +30,7 @@ namespace System.Threading.Tasks
 
         internal bool Cancel()
         {
-            lock(_sync)
+            lock (_sync)
             {
                 if (Status == TaskStatus.Running)
                 {
@@ -130,7 +130,7 @@ namespace System.Threading.Tasks
 
         internal void GetResult()
         {
-            if(Exception != null)
+            if (Exception != null)
                 throw Exception.InnerExceptions.First();
 
             if (IsCanceled)
@@ -222,7 +222,7 @@ namespace System.Threading.Tasks
                 {
                     if (t.IsFaulted)
                         lock (exceptions)
-                        exceptions[index] = t.Exception;
+                            exceptions[index] = t.Exception;
 
                     CheckWhenAllCompletetion(tasks, tcs, null, exceptions, ref count);
                 }
@@ -318,7 +318,7 @@ namespace System.Threading.Tasks
                     continuationAction(this);
                     tcs.TrySetResult(null);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     tcs.TrySetException(ex);
                 }
@@ -336,7 +336,7 @@ namespace System.Threading.Tasks
                     var r = continuationFunction(this);
                     tcs.TrySetResult(r);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     tcs.TrySetException(ex);
                 }
@@ -373,7 +373,7 @@ namespace System.Threading.Tasks
                 tcs.SetResult(false);
                 return task;
             }
-            if(millisecondsDelay < 0)
+            if (millisecondsDelay < 0)
             {
                 throw new ArgumentOutOfRangeException("The millisecondsDelay argument is must be 0 or greater. " + millisecondsDelay);
             }
