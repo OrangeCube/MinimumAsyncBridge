@@ -6,15 +6,15 @@ namespace System.Runtime.CompilerServices
     public struct ConfiguredTaskAwaitable
     {
         Task _t;
-        bool _continueOnCapturedContext;
+        private readonly ConfiguredTaskAwaiter _configuredTaskAwaiter;
 
         internal ConfiguredTaskAwaitable(Task t, bool continueOnCapturedContext)
         {
             _t = t;
-            _continueOnCapturedContext = continueOnCapturedContext;
+            _configuredTaskAwaiter = new ConfiguredTaskAwaiter(_t, continueOnCapturedContext);
         }
 
-        public ConfiguredTaskAwaiter GetAwaiter() => new ConfiguredTaskAwaiter(_t, _continueOnCapturedContext);
+        public ConfiguredTaskAwaiter GetAwaiter() => _configuredTaskAwaiter;
 
         public struct ConfiguredTaskAwaiter : ICriticalNotifyCompletion, INotifyCompletion
         {
