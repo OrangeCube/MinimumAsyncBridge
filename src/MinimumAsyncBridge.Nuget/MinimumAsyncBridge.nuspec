@@ -17,7 +17,7 @@
       <frameworkAssembly assemblyName="System" targetFramework="" />
     </frameworkAssemblies>
     <dependencies>
-      <dependency id="MinimumThreadingBridge" version="0.10.0.1" />
+      <dependency id="MinimumThreadingBridge" version="0.10.0.0" />
     </dependencies>
   </metadata>
   <files>
