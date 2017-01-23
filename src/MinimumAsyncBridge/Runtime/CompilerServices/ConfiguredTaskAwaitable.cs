@@ -5,13 +5,11 @@ namespace System.Runtime.CompilerServices
 {
     public struct ConfiguredTaskAwaitable
     {
-        Task _t;
         private readonly ConfiguredTaskAwaiter _configuredTaskAwaiter;
 
         internal ConfiguredTaskAwaitable(Task t, bool continueOnCapturedContext)
         {
-            _t = t;
-            _configuredTaskAwaiter = new ConfiguredTaskAwaiter(_t, continueOnCapturedContext);
+            _configuredTaskAwaiter = new ConfiguredTaskAwaiter(t, continueOnCapturedContext);
         }
 
         public ConfiguredTaskAwaiter GetAwaiter() => _configuredTaskAwaiter;
