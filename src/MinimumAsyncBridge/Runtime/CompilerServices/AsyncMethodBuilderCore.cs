@@ -121,7 +121,18 @@ namespace System.Runtime.CompilerServices
                                 x =>
                                 {
                                     if (sync == null)
-                                        action(x);
+                                    {
+                                        var prevContext = SynchronizationContext.Current;
+                                        try
+                                        {
+                                            SynchronizationContext.SetSynchronizationContext(null);
+                                            action(x);
+                                        }
+                                        finally
+                                        {
+                                            SynchronizationContext.SetSynchronizationContext(prevContext);
+                                        }
+                                    }
                                     else
                                         sync.Post(y => action(y), x);
                                 }, _stateMachine);
