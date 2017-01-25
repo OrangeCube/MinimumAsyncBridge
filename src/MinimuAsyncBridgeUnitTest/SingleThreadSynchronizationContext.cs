@@ -43,7 +43,6 @@ namespace MinimuAsyncBridgeUnitTest
         }
 
         private List<Action> _actions = new List<Action>();
-        object _sync = new object();
 
         /// <summary>
         /// <see cref="SynchronizationContext.Post(SendOrPostCallback, object)"/>
@@ -52,7 +51,7 @@ namespace MinimuAsyncBridgeUnitTest
         /// <param name="state"></param>
         public override void Post(SendOrPostCallback d, object state)
         {
-            lock (_sync)
+            lock (_actions)
             {
                 _actions.Add(() => d(state));
             }
@@ -71,8 +70,11 @@ namespace MinimuAsyncBridgeUnitTest
             {
                 Action[] actions;
 
-                lock (_sync)
+                lock (_actions)
                 {
+                    if (_actions.Count == 0)
+                        break;
+
                     actions = _actions.ToArray();
                     _actions.Clear();
                 }
