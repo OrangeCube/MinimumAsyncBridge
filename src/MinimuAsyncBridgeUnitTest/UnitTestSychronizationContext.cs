@@ -65,7 +65,10 @@ namespace MinimuAsyncBridgeUnitTest
         {
             await Task.Delay(1);
             var r = new Random();
-            await Task.WhenAll(Enumerable.Range(0, 100).Select(_ => RunRandomTasksAsync(r.Next())));
+            await Task.WhenAll(Enumerable.Range(0, 50).Select(_ => RunRandomTasksAsync(r.Next())));
+            ContextShouldBeSingleThread();
+            await Task.WhenAny(Enumerable.Range(0, 50).Select(_ => RunRandomTasksAsync(r.Next())));
+            ContextShouldBeSingleThread();
         }
 
         private async Task RunRandomTasksAsync(int seed)
@@ -76,6 +79,8 @@ namespace MinimuAsyncBridgeUnitTest
                 await RandomDelay(r);
                 ContextShouldBeSingleThread();
             }
+            await RandomDelay(r).ConfigureAwait(false);
+            ContextShouldBeLost();
         }
         [TestMethod]
         public void ContextShouldBePreservedOverLostMethod()
