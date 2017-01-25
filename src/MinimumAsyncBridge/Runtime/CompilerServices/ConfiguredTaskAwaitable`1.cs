@@ -28,28 +28,16 @@ namespace System.Runtime.CompilerServices
             public void OnCompleted(Action continuation)
             {
                 var back = SynchronizationContext.Current;
-                try
-                {
-                    SynchronizationContext.SetSynchronizationContext(_capturedContext);
-                    TaskAwaiter.OnCompletedInternal(_t, continuation, _capturedContext);
-                }
-                finally
-                {
-                    SynchronizationContext.SetSynchronizationContext(back);
-                }
+                SynchronizationContext.SetSynchronizationContext(_capturedContext);
+                TaskAwaiter.OnCompletedInternal(_t, continuation, _capturedContext);
+                SynchronizationContext.SetSynchronizationContext(back);
             }
             public void UnsafeOnCompleted(Action continuation)
             {
                 var back = SynchronizationContext.Current;
-                try
-                {
-                    SynchronizationContext.SetSynchronizationContext(_capturedContext);
-                    OnCompleted(continuation);
-                }
-                finally
-                {
-                    SynchronizationContext.SetSynchronizationContext(back);
-                }
+                SynchronizationContext.SetSynchronizationContext(_capturedContext);
+                OnCompleted(continuation);
+                SynchronizationContext.SetSynchronizationContext(back);
             }
             public bool IsCompleted => _t.IsCompleted;
             public TResult GetResult() => _t.GetResult();
