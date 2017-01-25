@@ -25,32 +25,8 @@ namespace System.Runtime.CompilerServices
                 _capturedContext = continueOnCapturedContext ? SynchronizationContext.Current : null;
             }
 
-            public void OnCompleted(Action continuation)
-            {
-                var back = SynchronizationContext.Current;
-                try
-                {
-                    SynchronizationContext.SetSynchronizationContext(_capturedContext);
-                    TaskAwaiter.OnCompletedInternal(_t, continuation, _capturedContext);
-                }
-                finally
-                {
-                    SynchronizationContext.SetSynchronizationContext(back);
-                }
-            }
-            public void UnsafeOnCompleted(Action continuation)
-            {
-                var back = SynchronizationContext.Current;
-                try
-                {
-                    SynchronizationContext.SetSynchronizationContext(_capturedContext);
-                    OnCompleted(continuation);
-                }
-                finally
-                {
-                    SynchronizationContext.SetSynchronizationContext(back);
-                }
-            }
+            public void OnCompleted(Action continuation) => TaskAwaiter.OnCompletedInternal(_t, continuation, _capturedContext);
+            public void UnsafeOnCompleted(Action continuation) => OnCompleted(continuation);
             public bool IsCompleted => _t.IsCompleted;
             public void GetResult() => _t.GetResult();
         }

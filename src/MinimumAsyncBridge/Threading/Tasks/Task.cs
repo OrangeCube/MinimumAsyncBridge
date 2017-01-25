@@ -160,6 +160,8 @@ namespace System.Threading.Tasks
             return tcs.Task;
         }
 
+        public static Task<Task> WhenAny(IEnumerable<Task> tasks) => WhenAny(tasks.ToArray());
+
         public static Task<Task> WhenAny(params Task[] tasks)
         {
             if (tasks == null) throw new ArgumentNullException(nameof(tasks));
@@ -180,6 +182,8 @@ namespace System.Threading.Tasks
 
             return tcs.Task;
         }
+
+        public static Task<Task<TResult>> WhenAny<TResult>(IEnumerable<Task<TResult>> tasks) => WhenAny(tasks.ToArray());
 
         public static Task<Task<TResult>> WhenAny<TResult>(params Task<TResult>[] tasks)
         {
