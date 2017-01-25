@@ -133,5 +133,68 @@ namespace MinimuAsyncBridgeUnitTest
             await Task.CompletedTask.ConfigureAwait(true);
             ContextShouldBeSingleThread();
         }
+        
+        [TestMethod]
+        public void AwaitOperatorShouldWorkOnException()
+        {
+            StartOnSingleThreadContext(AwaitOperatorShouldWorkOnExceptionAsync);
+        }
+
+        private async Task AwaitOperatorShouldWorkOnExceptionAsync()
+        {
+            await Task.Delay(1);
+            var r = new Random();
+
+            try
+            {
+                await ThrowInvalidException(r.Next());
+                Assert.Fail();
+            }
+            catch
+            {
+            }
+            ContextShouldBeSingleThread();
+
+            try
+            {
+                await Task.WhenAll(Enumerable.Range(0, 50).Select(_ => ThrowInvalidException(r.Next())));
+                Assert.Fail();
+            }
+            catch
+            {
+            }
+            ContextShouldBeSingleThread();
+
+            try
+            {
+                await Task.WhenAny(Enumerable.Range(0, 50).Select(_ => ThrowInvalidException(r.Next())));
+                Assert.Fail();
+            }
+            catch
+            {
+            }
+            ContextShouldBeSingleThread();
+
+            await RandomDelay().ConfigureAwait(false);
+
+            try
+            {
+                await ThrowInvalidException(r.Next());
+                Assert.Fail();
+            }
+            catch
+            {
+            }
+            ContextShouldBeLost();
+        }
+
+        private async Task ThrowInvalidException(int seed)
+        {
+            var r = new Random(seed);
+            await RandomDelay(r).ConfigureAwait(false);
+            ContextShouldBeLost();
+
+            throw new InvalidOperationException();
+        }
     }
 }
