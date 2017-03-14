@@ -86,11 +86,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MinimumAsyncBridge.V4\MinimumAsyncBridge.V45.csproj">
+    <ProjectReference Include="..\..\MinimumAsync\MinimumAsyncBridge.V4\MinimumAsyncBridge.V45.csproj">
       <Project>{1d1df845-cdb9-47ad-9595-e23cac84cf65}</Project>
       <Name>MinimumAsyncBridge.V45</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MinimumThreadingBridge.V45\MinimumThreadingBridge.V45.csproj">
+    <ProjectReference Include="..\..\MinimumThreading\MinimumThreadingBridge.V45\MinimumThreadingBridge.V45.csproj">
       <Project>{d121cf4c-41c3-405b-96d1-89424a19575f}</Project>
       <Name>MinimumThreadingBridge.V45</Name>
     </ProjectReference>

@@ -4,19 +4,19 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{54B02423-C00F-405F-9A33-46FC0C990210}</ProjectGuid>
+    <ProjectGuid>{C8AD18C5-6831-4568-A01B-8E7344739931}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IteratorTasks.AsyncBridge</RootNamespace>
-    <AssemblyName>IteratorTasks.AsyncBridge</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>Sample45</RootNamespace>
+    <AssemblyName>Sample45</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\IteratorTasks\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,40 +24,34 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\IteratorTasks\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IteratorTasks, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IteratorTasks.1.0.0.0\lib\IteratorTasks.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IteratorTasksAwaitExtensions.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TaskAwaiter`1.cs" />
-    <Compile Include="TaskAwaiter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MinimumAsyncBridge\MinimumAsyncBridge.csproj">
-      <Project>{1f45e6f4-9601-4385-b96b-0a3a11c33a17}</Project>
-      <Name>MinimumAsyncBridge</Name>
+    <ProjectReference Include="..\..\MinimumAsyncBridge\MinimumAsyncBridge.V4\MinimumAsyncBridge.V45.csproj">
+      <Project>{1d1df845-cdb9-47ad-9595-e23cac84cf65}</Project>
+      <Name>MinimumAsyncBridge.V45</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\IteratorTasks.1.0.0.0\tools\analyzers\IteratorTasksGenerator.dll" />
+    <ProjectReference Include="..\Sample35\Sample35.csproj">
+      <Project>{5a26d71a-4249-43c8-801a-ab1c53afe8e9}</Project>
+      <Name>Sample35</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -42,7 +42,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MinimumAsyncBridge\MinimumAsyncBridge.csproj">
+    <ProjectReference Include="..\..\MinimumAsyncBridge\MinimumAsyncBridge\MinimumAsyncBridge.csproj">
       <Project>{1f45e6f4-9601-4385-b96b-0a3a11c33a17}</Project>
       <Name>MinimumAsyncBridge</Name>
     </ProjectReference>

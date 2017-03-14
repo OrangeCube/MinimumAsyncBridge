@@ -68,11 +68,11 @@
     <Compile Include="SingleThreadSynchronizationContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MinimumAsyncBridge\MinimumAsyncBridge.csproj">
+    <ProjectReference Include="..\..\MinimumAsync\MinimumAsyncBridge\MinimumAsyncBridge.csproj">
       <Project>{1f45e6f4-9601-4385-b96b-0a3a11c33a17}</Project>
       <Name>MinimumAsyncBridge</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MinimumThreadingBridge\MinimumThreadingBridge.csproj">
+    <ProjectReference Include="..\..\MinimumThreading\MinimumThreadingBridge\MinimumThreadingBridge.csproj">
       <Project>{c92c4e09-80e8-4b71-b7c9-918999c1d3e7}</Project>
       <Name>MinimumThreadingBridge</Name>
     </ProjectReference>

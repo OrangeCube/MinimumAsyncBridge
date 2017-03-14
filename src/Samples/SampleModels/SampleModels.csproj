@@ -4,13 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C8AD18C5-6831-4568-A01B-8E7344739931}</ProjectGuid>
+    <ProjectGuid>{D5B9CC58-3F63-41E8-A27F-85707EE16B5D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sample45</RootNamespace>
-    <AssemblyName>Sample45</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>SampleModels</RootNamespace>
+    <AssemblyName>SampleModels</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,28 +32,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MinimumAsyncBridge.V4\MinimumAsyncBridge.V45.csproj">
-      <Project>{1d1df845-cdb9-47ad-9595-e23cac84cf65}</Project>
-      <Name>MinimumAsyncBridge.V45</Name>
+    <ProjectReference Include="..\..\Specific\IteratorTasks.AsyncBridge\IteratorTasks.AsyncBridge.csproj">
+      <Project>{54b02423-c00f-405f-9a33-46fc0c990210}</Project>
+      <Name>IteratorTasks.AsyncBridge</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Sample35\Sample35.csproj">
-      <Project>{5a26d71a-4249-43c8-801a-ab1c53afe8e9}</Project>
-      <Name>Sample35</Name>
+    <ProjectReference Include="..\..\MinimumAsyncBridge\MinimumAsyncBridge\MinimumAsyncBridge.csproj">
+      <Project>{1f45e6f4-9601-4385-b96b-0a3a11c33a17}</Project>
+      <Name>MinimumAsyncBridge</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Specific\UniRx.AsyncBridge\UniRx.AsyncBridge.csproj">
+      <Project>{dd1b6107-a6a5-4bf8-b525-06fc7017cdd1}</Project>
+      <Name>UniRx.AsyncBridge</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CopySettings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="IteratorTasks">
+      <Version>1.0.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

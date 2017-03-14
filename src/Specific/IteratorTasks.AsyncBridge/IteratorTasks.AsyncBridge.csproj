@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DD1B6107-A6A5-4BF8-B525-06FC7017CDD1}</ProjectGuid>
+    <ProjectGuid>{54B02423-C00F-405F-9A33-46FC0C990210}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UniRx.AsyncBridge</RootNamespace>
-    <AssemblyName>UniRx.AsyncBridge</AssemblyName>
+    <RootNamespace>IteratorTasks.AsyncBridge</RootNamespace>
+    <AssemblyName>IteratorTasks.AsyncBridge</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\IteratorTasks\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\IteratorTasks\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -36,20 +36,23 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UniRx">
-      <HintPath>..\MinimumAsyncBridge\external\UniRx.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncSubjectAwaitExtensions.cs" />
+    <Compile Include="IteratorTasksAwaitExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AsyncSubjectAwaiter.cs" />
+    <Compile Include="TaskAwaiter`1.cs" />
+    <Compile Include="TaskAwaiter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MinimumAsyncBridge\MinimumAsyncBridge.csproj">
+    <ProjectReference Include="..\..\MinimumAsync\MinimumAsyncBridge\MinimumAsyncBridge.csproj">
       <Project>{1f45e6f4-9601-4385-b96b-0a3a11c33a17}</Project>
       <Name>MinimumAsyncBridge</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="IteratorTasks">
+      <Version>1.0.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
