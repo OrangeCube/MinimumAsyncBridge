@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1F45E6F4-9601-4385-B96B-0A3A11C33A17}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System</RootNamespace>
+    <AssemblyName>MinimumAsyncBridge</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Async\net35\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\Async\net35\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Runtime\CompilerServices\ConfiguredTaskAwaitable.cs" />
+    <Compile Include="Runtime\CompilerServices\ConfiguredTaskAwaitable`1.cs" />
+    <Compile Include="Runtime\CompilerServices\TaskAwaiter`1.cs" />
+    <Compile Include="Runtime\CompilerServices\TaskAwaiter.cs" />
+    <Compile Include="Runtime\CompilerServices\AsyncMethodBuilderCore.cs" />
+    <Compile Include="Runtime\CompilerServices\AsyncMethodTaskCache.cs" />
+    <Compile Include="Runtime\CompilerServices\AsyncServices.cs" />
+    <Compile Include="Runtime\CompilerServices\AsyncStateMachineAttribute.cs" />
+    <Compile Include="Runtime\CompilerServices\AsyncTaskMethodBuilder.cs" />
+    <Compile Include="Runtime\CompilerServices\AsyncTaskMethodBuilder`1.cs" />
+    <Compile Include="Runtime\CompilerServices\AsyncVoidMethodBuilder.cs" />
+    <Compile Include="Runtime\CompilerServices\IAsyncMethodBuilder.cs" />
+    <Compile Include="Runtime\CompilerServices\IAsyncStateMachine.cs" />
+    <Compile Include="Runtime\CompilerServices\ICriticalNotifyCompletion.cs" />
+    <Compile Include="Runtime\CompilerServices\INotifyCompletion.cs" />
+    <Compile Include="Runtime\CompilerServices\IteratorStateMachineAttribute.cs" />
+    <Compile Include="Runtime\CompilerServices\StateMachineAttribute.cs" />
+    <Compile Include="Threading\SemaphoreSlim.cs" />
+    <Compile Include="Threading\Tasks\Task`1.cs" />
+    <Compile Include="Threading\Tasks\Task.cs" />
+    <Compile Include="Threading\Tasks\TaskCanceledException.cs" />
+    <Compile Include="Threading\Tasks\TaskCompletionSource.cs" />
+    <Compile Include="Threading\Tasks\TaskStatus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Runtime\CompilerServices\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Runtime\CompilerServices\README.ja-jp.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MinimumThreading\MinimumThreadingBridge\MinimumThreadingBridge.csproj">
+      <Project>{c92c4e09-80e8-4b71-b7c9-918999c1d3e7}</Project>
+      <Name>MinimumThreadingBridge</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
