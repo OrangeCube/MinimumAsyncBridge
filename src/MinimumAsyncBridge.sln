@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MinimumAsync", "MinimumAsync", "{4C31421B-5AE2-4379-BF9F-D2DD0BE0A433}"
 EndProject
@@ -40,6 +40,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksExtensionsBridge", "TasksExtensions\TasksExtensionsBridge\TasksExtensionsBridge.csproj", "{B7487EBF-A423-497B-B210-E1890E3A8DC1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksExtensionsBridge.TypeForward", "TasksExtensions\TasksExtensionsBridge.TypeForward\TasksExtensionsBridge.TypeForward.csproj", "{142DD94F-01CF-410B-83AA-A13C26F578FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueTuple.Std", "ValueTuple\ValueTuple.Std\ValueTuple.Std.csproj", "{3ED2E4C3-B6CD-4001-8C58-6B7A9001B8EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueTupleBridge.TypeForward47", "ValueTuple\ValueTupleBridge.TypeForward47\ValueTupleBridge.TypeForward47.csproj", "{DE1CD580-732F-4F8C-90D1-D44C3706C664}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +99,14 @@ Global
 		{142DD94F-01CF-410B-83AA-A13C26F578FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{142DD94F-01CF-410B-83AA-A13C26F578FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{142DD94F-01CF-410B-83AA-A13C26F578FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ED2E4C3-B6CD-4001-8C58-6B7A9001B8EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ED2E4C3-B6CD-4001-8C58-6B7A9001B8EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ED2E4C3-B6CD-4001-8C58-6B7A9001B8EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ED2E4C3-B6CD-4001-8C58-6B7A9001B8EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE1CD580-732F-4F8C-90D1-D44C3706C664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE1CD580-732F-4F8C-90D1-D44C3706C664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE1CD580-732F-4F8C-90D1-D44C3706C664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE1CD580-732F-4F8C-90D1-D44C3706C664}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,5 +129,7 @@ Global
 		{F79CC876-2430-4D06-B932-D1056748E516} = {A9CC30FD-4725-4574-AFA4-F5756F65C473}
 		{B7487EBF-A423-497B-B210-E1890E3A8DC1} = {F79CC876-2430-4D06-B932-D1056748E516}
 		{142DD94F-01CF-410B-83AA-A13C26F578FF} = {F79CC876-2430-4D06-B932-D1056748E516}
+		{3ED2E4C3-B6CD-4001-8C58-6B7A9001B8EC} = {94CD3632-9B54-44D6-881D-D2069AAE907B}
+		{DE1CD580-732F-4F8C-90D1-D44C3706C664} = {94CD3632-9B54-44D6-881D-D2069AAE907B}
 	EndGlobalSection
 EndGlobal
