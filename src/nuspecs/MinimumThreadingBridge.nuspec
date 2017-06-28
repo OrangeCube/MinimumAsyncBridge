@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>MinimumThreadingBridge</id>
-    <version>0.10.0.0</version>
+    <version>0.10.1</version>
     <title>MinimumThreadingBridge</title>
     <authors>Nobuyuki Iwanaga</authors>
     <owners>Nobuyuki Iwanaga</owners>
@@ -10,10 +10,7 @@
     <projectUrl>https://github.com/OrangeCube/MinimumAsyncBridge</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Miminum set of the async/await portability libarary.</description>
-    <releaseNotes>
-      add AggregateException
-      make CancellationToken compatible with the original one
-    </releaseNotes>
+    <releaseNotes>support netstandard1.0</releaseNotes>
     <copyright>Nobuyuki Iwanaga</copyright>
     <tags>AsyncBridge, CancellationToken</tags>
     <frameworkAssemblies>
@@ -21,7 +18,8 @@
     </frameworkAssemblies>
   </metadata>
   <files>
-      <file src="..\bin\Threading\net35\MinimumThreadingBridge.*" target="lib\net35\" />
-      <file src="..\bin\Threading\net45\MinimumThreadingBridge.*" target="lib\net45\" />
+    <file src="..\MinimumThreading\MinimumThreadingBridge\bin\Debug\net35\MinimumThreadingBridge.*" target="lib\net35\" />
+    <file src="..\MinimumThreading\MinimumThreadingBridge.V45\bin\Debug\net45\MinimumThreadingBridge.*" target="lib\net45\" />
+    <file src="..\MinimumThreading\MinimumThreadingBridge.V45\bin\Debug\netstandard1.0\MinimumThreadingBridge.*" target="lib\netstandard1.0\" exclude="**\*.deps.json" />
   </files>
 </package>

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>ValueTupleBridge</id>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <title>ValueTupleBridge</title>
     <authors>Nobuyuki Iwanaga</authors>
     <owners>Nobuyuki Iwanaga</owners>
@@ -15,18 +15,16 @@
     <tags>ValueTuple</tags>
     <dependencies>
       <group targetFramework="net45">
-        <dependency id="System.ValueTuple" version="4.3" />
+        <dependency id="System.ValueTuple" version="4.3.1" />
       </group>
-      <group targetFramework="net47" />
       <group targetFramework=".NETStandard1.0">
-        <dependency id="System.ValueTuple" version="4.3" />
+        <dependency id="System.ValueTuple" version="4.3.1" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="..\bin\ValueTuple\net35\ValueTupleBridge.*" target="lib\net35\" />
-    <file src="..\bin\ValueTuple\net45\ValueTupleBridge.*" target="lib\net45\" />
-    <file src="..\bin\ValueTuple\net47\ValueTupleBridge.*" target="lib\net47\" />
-    <file src="..\bin\ValueTuple\netstandard1.0\ValueTupleBridge.*" target="lib\netstandard1.0\" exclude="**\*.deps.json" />
+    <file src="..\ValueTuple\ValueTupleBridge\bin\Debug\net35\ValueTupleBridge.*" target="lib\net35\" />
+    <file src="..\ValueTuple\ValueTupleBridge.TypeForward\bin\Debug\net45\ValueTupleBridge.*" target="lib\net45\" />
+    <file src="..\ValueTuple\ValueTupleBridge.TypeForward\bin\Debug\netstandard1.0\ValueTupleBridge.*" target="lib\netstandard1.0\" exclude="**\*.deps.json" />
   </files>
 </package>
