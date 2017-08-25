@@ -68,7 +68,16 @@ namespace LayoutAutoToSequencial
         /// <param name="file"></param>
         private static void RewriteDll(string file)
         {
-            var module = ModuleDefinition.ReadModule(file);
+            ModuleDefinition module;
+            try
+            {
+                module = ModuleDefinition.ReadModule(file);
+            }
+            catch (BadImageFormatException)
+            {
+                // Skip unmanaged module
+                return;
+            }
 
             var types = GetAllTypes(module);
             var any = false;
