@@ -166,6 +166,7 @@ namespace System.Threading.Tasks
         {
             if (tasks == null) throw new ArgumentNullException(nameof(tasks));
             if (tasks.Length == 0) throw new ArgumentException(nameof(tasks) + " empty", nameof(tasks));
+            if (tasks.Any(x => x == null)) throw new ArgumentException("Argument tasks contained a null value", nameof(tasks));
 
             var tcs = new TaskCompletionSource<Task>();
             var task = tcs.Task;
@@ -196,6 +197,7 @@ namespace System.Threading.Tasks
         {
             if (tasks == null) throw new ArgumentNullException(nameof(tasks));
             if (tasks.Length == 0) throw new ArgumentException(nameof(tasks) + " empty", nameof(tasks));
+            if (tasks.Any(x => x == null)) throw new ArgumentException("Argument tasks contained a null value", nameof(tasks));
 
             var tcs = new TaskCompletionSource<Task<TResult>>();
             var task = tcs.Task;
