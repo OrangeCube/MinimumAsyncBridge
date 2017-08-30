@@ -30,6 +30,20 @@ namespace MinimuAsyncBridgeUnitTest
             WhenAnyShouldHaveExceptionIfFirstItemOfTheTasksOfTResultGetErrorAsync().Wait();
         }
 
+        [TestMethod]
+        public void WhenAnyShouldHaveExceptionIfNull()
+        {
+            WhenAnyShouldHaveExceptionIfTasksIsNullAsync().Wait();
+            WhenAnyShouldHaveExceptionIfTasksIsEmptyAsync().Wait();
+            WhenAnyShouldHaveExceptionIfTasksHasNullAsync().Wait();
+        }
+
+        [TestMethod]
+        public void TestWhenAnyCompleteIfTasksHasCompletedTask()
+        {
+            TestWhenAnyCompleteIfTasksHasCompletedTaskAsync().Wait();
+        }
+
         private async Task WhenAnyShouldBeCanceledIfFirstItemOfTheTasksOfTResultIsCancledAsync()
         {
             var tcs = new TaskCompletionSource<int>();
@@ -135,6 +149,76 @@ namespace MinimuAsyncBridgeUnitTest
                 t4).ConfigureAwait(false);
 
             Assert.AreSame(r, t1);
+        }
+
+        private async Task WhenAnyShouldHaveExceptionIfTasksHasNullAsync()
+        {
+            var t1 = Task.Delay(10);
+            var t2 = Task.Delay(200);
+            var t3 = default(Task);
+            var t4 = Task.Delay(1000);
+
+            var hasException = false;
+            try
+            {
+                var r = await Task.WhenAny(
+                    t1,
+                    t2,
+                    t3,
+                    t4).ConfigureAwait(false);
+            }
+            catch(ArgumentException)
+            {
+                hasException = true;
+            }
+
+            Assert.IsTrue(hasException);
+        }
+
+        private async Task WhenAnyShouldHaveExceptionIfTasksIsEmptyAsync()
+        {
+            var hasException = false;
+            try
+            {
+                var r = await Task.WhenAny(Enumerable.Empty<Task>()).ConfigureAwait(false);
+            }
+            catch (ArgumentException)
+            {
+                hasException = true;
+            }
+
+            Assert.IsTrue(hasException);
+        }
+
+        private async Task WhenAnyShouldHaveExceptionIfTasksIsNullAsync()
+        {
+            var hasException = false;
+            try
+            {
+                var r = await Task.WhenAny(null).ConfigureAwait(false);
+            }
+            catch (ArgumentNullException)
+            {
+                hasException = true;
+            }
+
+            Assert.IsTrue(hasException);
+        }
+
+        private async Task TestWhenAnyCompleteIfTasksHasCompletedTaskAsync()
+        {
+            var t1 = Task.Delay(100);
+            var t2 = Task.Delay(200);
+            var t3 = Task.CompletedTask;
+            var t4 = Task.Delay(1000);
+
+            var r = await Task.WhenAny(
+                t2,
+                t1,
+                t3,
+                t4).ConfigureAwait(false);
+
+            Assert.AreSame(r, t3);
         }
     }
 }
