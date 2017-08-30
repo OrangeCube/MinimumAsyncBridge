@@ -170,19 +170,26 @@ namespace System.Threading.Tasks
             if (tasks.Length == 0) throw new ArgumentException(nameof(tasks) + " empty", nameof(tasks));
 
             var tcs = new TaskCompletionSource<Task>();
+            var task = tcs.Task;
 
             foreach (var t in tasks)
             {
                 if (t.IsCompleted)
                 {
-                    tcs.TrySetResult(t);
+                    tcs?.TrySetResult(t);
+                    tcs = null;
                     break;
                 }
 
-                t.OnCompleted(() => tcs.TrySetResult(t));
+                void setResult()
+                {
+                    tcs?.TrySetResult(t);
+                    tcs = null;
+                };
+                t.OnCompleted(setResult);
             }
 
-            return tcs.Task;
+            return task;
         }
 
         public static Task<Task<TResult>> WhenAny<TResult>(IEnumerable<Task<TResult>> tasks) => WhenAny(tasks.ToArray());
@@ -193,19 +200,26 @@ namespace System.Threading.Tasks
             if (tasks.Length == 0) throw new ArgumentException(nameof(tasks) + " empty", nameof(tasks));
 
             var tcs = new TaskCompletionSource<Task<TResult>>();
+            var task = tcs.Task;
 
             foreach (var t in tasks)
             {
                 if (t.IsCompleted)
                 {
-                    tcs.TrySetResult(t);
+                    tcs?.TrySetResult(t);
+                    tcs = null;
                     break;
                 }
 
-                t.OnCompleted(() => tcs.TrySetResult(t));
+                void setResult()
+                {
+                    tcs?.TrySetResult(t);
+                    tcs = null;
+                };
+                t.OnCompleted(setResult);
             }
 
-            return tcs.Task;
+            return task;
         }
 
         public static Task WhenAll(IEnumerable<Task> tasks) => WhenAll(tasks.ToArray());
