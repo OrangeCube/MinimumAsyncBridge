@@ -415,12 +415,12 @@ namespace System.Threading.Tasks
                 }
             };
 
-            t = new Timer(_ => stop(false), null, Timeout.Infinite, Timeout.Infinite);
-
             if (cancellationToken != CancellationToken.None)
             {
                 ctr = cancellationToken.Register(() => stop(true));
             }
+
+            t = new Timer(_ => stop(false), null, Timeout.Infinite, Timeout.Infinite);
 
             t?.Change(millisecondsDelay, Timeout.Infinite);
 
