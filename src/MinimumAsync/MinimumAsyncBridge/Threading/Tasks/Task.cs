@@ -9,6 +9,8 @@ namespace System.Threading.Tasks
     /// </summary>
     public class Task
     {
+        public Task() => Status = TaskStatus.Running;
+
         public TaskStatus Status { get; protected internal set; }
 
         /// <summary>
