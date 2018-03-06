@@ -1,6 +1,4 @@
-﻿pushd ..\src\MinimumAsyncBridge.Nuget
+﻿pushd ..\src\nuspecs
 .\pack.bat
 popd
 
-if (-not (Test-Path ../../packages)) { mkdir ../../packages }
-cp ..\src\MinimumAsyncBridge.Nuget\*.nupkg ../../packages

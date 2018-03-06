@@ -168,21 +168,29 @@ namespace System.Threading.Tasks
         {
             if (tasks == null) throw new ArgumentNullException(nameof(tasks));
             if (tasks.Length == 0) throw new ArgumentException(nameof(tasks) + " empty", nameof(tasks));
+            if (tasks.Any(x => x == null)) throw new ArgumentException("Argument tasks contained a null value", nameof(tasks));
 
             var tcs = new TaskCompletionSource<Task>();
+            var task = tcs.Task;
 
             foreach (var t in tasks)
             {
                 if (t.IsCompleted)
                 {
-                    tcs.TrySetResult(t);
+                    tcs?.TrySetResult(t);
+                    tcs = null;
                     break;
                 }
 
-                t.OnCompleted(() => tcs.TrySetResult(t));
+                void setResult()
+                {
+                    tcs?.TrySetResult(t);
+                    tcs = null;
+                };
+                t.OnCompleted(setResult);
             }
 
-            return tcs.Task;
+            return task;
         }
 
         public static Task<Task<TResult>> WhenAny<TResult>(IEnumerable<Task<TResult>> tasks) => WhenAny(tasks.ToArray());
@@ -191,21 +199,29 @@ namespace System.Threading.Tasks
         {
             if (tasks == null) throw new ArgumentNullException(nameof(tasks));
             if (tasks.Length == 0) throw new ArgumentException(nameof(tasks) + " empty", nameof(tasks));
+            if (tasks.Any(x => x == null)) throw new ArgumentException("Argument tasks contained a null value", nameof(tasks));
 
             var tcs = new TaskCompletionSource<Task<TResult>>();
+            var task = tcs.Task;
 
             foreach (var t in tasks)
             {
                 if (t.IsCompleted)
                 {
-                    tcs.TrySetResult(t);
+                    tcs?.TrySetResult(t);
+                    tcs = null;
                     break;
                 }
 
-                t.OnCompleted(() => tcs.TrySetResult(t));
+                void setResult()
+                {
+                    tcs?.TrySetResult(t);
+                    tcs = null;
+                };
+                t.OnCompleted(setResult);
             }
 
-            return tcs.Task;
+            return task;
         }
 
         public static Task WhenAll(IEnumerable<Task> tasks) => WhenAll(tasks.ToArray());
@@ -401,12 +417,12 @@ namespace System.Threading.Tasks
                 }
             };
 
-            t = new Timer(_ => stop(false), null, Timeout.Infinite, Timeout.Infinite);
-
             if (cancellationToken != CancellationToken.None)
             {
                 ctr = cancellationToken.Register(() => stop(true));
             }
+
+            t = new Timer(_ => stop(false), null, Timeout.Infinite, Timeout.Infinite);
 
             t?.Change(millisecondsDelay, Timeout.Infinite);
 
