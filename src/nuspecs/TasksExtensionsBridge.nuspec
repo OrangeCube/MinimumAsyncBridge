@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>TasksExtensionsBridge</id>
-    <version>0.1.4</version>
+    <version>0.2.0</version>
     <title>TasksExtensionsBridge</title>
     <authors>Nobuyuki Iwanaga</authors>
     <owners>Nobuyuki Iwanaga</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/OrangeCube/MinimumAsyncBridge</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Backporting of System.Threading.Tasks.Extensions for .NET 3.5.</description>
-    <releaseNotes>update MinimumAsyncBridge to 0.11.1</releaseNotes>
+    <releaseNotes>Support non-generic ValueTask.</releaseNotes>
     <copyright>Nobuyuki Iwanaga</copyright>
     <tags>Tasks.Extensions</tags>
     <frameworkAssemblies>
@@ -21,10 +21,10 @@
         <dependency id="MinimumAsyncBridge" version="0.11.1" />
       </group>
       <group targetFramework="net45">
-        <dependency id="System.Threading.Tasks.Extensions" version="4.3" />
+        <dependency id="System.Threading.Tasks.Extensions" version="4.5" />
       </group>
       <group targetFramework="netstandard1.0">
-        <dependency id="System.Threading.Tasks.Extensions" version="4.3" />
+        <dependency id="System.Threading.Tasks.Extensions" version="4.5" />
       </group>
     </dependencies>
   </metadata>
