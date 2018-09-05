@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>ValueTupleBridge</id>
-    <version>0.1.2</version>
+    <version>0.1.4</version>
     <title>ValueTupleBridge</title>
     <authors>Nobuyuki Iwanaga</authors>
     <owners>Nobuyuki Iwanaga</owners>
@@ -10,15 +10,15 @@
     <projectUrl>https://github.com/OrangeCube/MinimumAsyncBridge</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Backporting of System.ValueTuple for .NET 3.5.</description>
-    <releaseNotes>support netstandard1.0</releaseNotes>
+    <releaseNotes>update denendency</releaseNotes>
     <copyright>Nobuyuki Iwanaga</copyright>
     <tags>ValueTuple</tags>
     <dependencies>
       <group targetFramework="net45">
-        <dependency id="System.ValueTuple" version="4.3.1" />
+        <dependency id="System.ValueTuple" version="4.5.0" />
       </group>
       <group targetFramework=".NETStandard1.0">
-        <dependency id="System.ValueTuple" version="4.3.1" />
+        <dependency id="System.ValueTuple" version="4.5.0" />
       </group>
     </dependencies>
   </metadata>
