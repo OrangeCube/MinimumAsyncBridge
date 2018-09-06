@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>TasksExtensionsBridge</id>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
     <title>TasksExtensionsBridge</title>
     <authors>Nobuyuki Iwanaga</authors>
     <owners>Nobuyuki Iwanaga</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/OrangeCube/MinimumAsyncBridge</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Backporting of System.Threading.Tasks.Extensions for .NET 3.5.</description>
-    <releaseNotes>Support non-generic ValueTask.</releaseNotes>
+    <releaseNotes>update denendency</releaseNotes>
     <copyright>Nobuyuki Iwanaga</copyright>
     <tags>Tasks.Extensions</tags>
     <frameworkAssemblies>
@@ -21,16 +21,24 @@
         <dependency id="MinimumAsyncBridge" version="0.11.1" />
       </group>
       <group targetFramework="net45">
-        <dependency id="System.Threading.Tasks.Extensions" version="4.5" />
+        <dependency id="System.Threading.Tasks.Extensions" version="4.5.1" />
+      </group>
+      <group targetFramework="net471">
+        <dependency id="System.Threading.Tasks.Extensions" version="4.5.1" />
       </group>
       <group targetFramework="netstandard1.0">
-        <dependency id="System.Threading.Tasks.Extensions" version="4.5" />
+        <dependency id="System.Threading.Tasks.Extensions" version="4.5.1" />
+      </group>
+      <group targetFramework="netstandard2.0">
+        <dependency id="System.Threading.Tasks.Extensions" version="4.5.1" />
       </group>
     </dependencies>
   </metadata>
   <files>
     <file src="..\TasksExtensions\TasksExtensionsBridge\bin\Debug\net35\TasksExtensionsBridge.*" target="lib\net35\" />
     <file src="..\TasksExtensions\TasksExtensionsBridge.TypeForward\bin\Debug\net45\TasksExtensionsBridge.*" target="lib\net45\" />
+    <file src="..\TasksExtensions\TasksExtensionsBridge.TypeForward\bin\Debug\net471\TasksExtensionsBridge.*" target="lib\net471\" />
     <file src="..\TasksExtensions\TasksExtensionsBridge.TypeForward\bin\Debug\netstandard1.0\TasksExtensionsBridge.*" target="lib\netstandard1.0\" exclude="**\*.deps.json" />
+    <file src="..\TasksExtensions\TasksExtensionsBridge.TypeForward\bin\Debug\netstandard2.0\TasksExtensionsBridge.*" target="lib\netstandard2.0\" exclude="**\*.deps.json" />
   </files>
 </package>
