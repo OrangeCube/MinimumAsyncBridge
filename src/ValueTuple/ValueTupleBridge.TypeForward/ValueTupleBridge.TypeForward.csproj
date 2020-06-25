@@ -3,7 +3,15 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard1.0;netstandard2.0;net45;net471</TargetFrameworks>
     <AssemblyName>ValueTupleBridge</AssemblyName>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
